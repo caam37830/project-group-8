@@ -73,7 +73,6 @@ class SIRModel:
         self.infected = []
         self.recovered = []
 
-
     def categorize_agents(self):
         """
         Iterate through the agents, and append their `id` to the appropriate list
@@ -119,7 +118,6 @@ class SIRModel:
         self.categorize_agents()
         self.days_passed += 1
 
-
     def summarize_model(self):
         """
         :return: A tuple summarizing the state of the model
@@ -128,6 +126,7 @@ class SIRModel:
         num_infected = len(self.infected)
         num_recovered = len(self.recovered)
         return self.days_passed, num_susceptible, num_infected, num_recovered
+
 
 class Agent:
     def __init__(self, agent_id):
