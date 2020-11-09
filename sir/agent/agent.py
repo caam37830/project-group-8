@@ -3,7 +3,7 @@ import math
 
 
 class SIRModel:
-    def __init__(self, b, k, size, prob_infect=1, b_infected=None):
+    def __init__(self, b, k, size, prob_infect=1):
         """
         Initialize an `SIRModel` class
         :param b: number of interactions per day, per agent, which could result in infection
@@ -11,8 +11,6 @@ class SIRModel:
         :param size: number of agents to generate
         :param prob_infect: (optional) probability that an interaction between a susceptible
         agent and an infected agent results in the susceptible agent's infection
-        :param b_infected: (optional) number of interactions per day for individuals who are
-        infected. Allows easy simulation of "social-distancing" scenarios
         """
         self.b = b
         self.k = k
@@ -23,7 +21,6 @@ class SIRModel:
         self.recovered = []
         self.days_passed = 0
         self.prob_infect = prob_infect
-        self.b_infected = b if b_infected is None else b_infected
 
     def exogenous_infect(self, n=None, indices=None):
         """
@@ -105,7 +102,7 @@ class SIRModel:
 
         # Infect susceptible agents, if they meet an infected agent
         for i_id in self.infected:
-            meet = random.sample(agent_ids, k=self.b_infected)
+            meet = random.sample(agent_ids, k=self.b)
             # If there is intersection between `meet` and `self.infected`, the agent
             # has met someone who is infected -- so they will be infected
             for id in meet:
