@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 
-class OdeSir():
+class OdeSir:
     """
     A class for setting up an ODE simulation of the S,I,R model
     """
@@ -11,7 +11,7 @@ class OdeSir():
         """
         Pass the class i0, the initial infected fraction of the
 
-        population, and n, the size of the population. Initializes 
+        population, and n, the size of the population. Initializes
 
         s0, r0, S0, R0, and I0 based on these values. Also requires
 
