@@ -34,7 +34,7 @@ class OdeSir():
         self.k = k
         self.func = lambda t, y: np.array(
             [-self.b * y[0] * y[2], self.k * y[2], self.b * y[0] * y[2] - self.k * y[2]])
-        self.start = np.array([self.S0, self.R0, self.I0])
+        self.start = np.array([self.s0, self.r0, self.i0])
         self.infection = None
 
     def _give_func(self):
@@ -57,12 +57,12 @@ class OdeSir():
         """
         time = (0, t)
         self.infection = solve_ivp(self.func, time, self.start)
-        self.S = self.infection.y[0]
-        self.R = self.infection.y[1]
-        self.I = self.infection.y[2]
-        self.s = self.S / self.N
-        self.r = self.R / self.N
-        self.i = self.I / self.N
+        self.s = self.infection.y[0]
+        self.r = self.infection.y[1]
+        self.i = self.infection.y[2]
+        self.S = self.s * self.N
+        self.R = self.r * self.N
+        self.I = self.i * self.N
         return self.infection
 
     def _reset(self):
