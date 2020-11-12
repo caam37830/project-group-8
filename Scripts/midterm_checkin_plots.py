@@ -3,11 +3,11 @@ A very useful docstring
 """
 import os
 import sys
-sys.path.append("../")
-
-from sir.agent.agent import *
-from sir.ode.sirODE import *
 import matplotlib.pyplot as plt
+
+sys.path.append("../")  # lets us access sibling directory `sir`
+from sir.agent import *
+from sir.ode import *
 
 
 # Make a folder for the plots, if it doesn't already exist
