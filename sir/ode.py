@@ -37,12 +37,6 @@ class OdeSir:
         self.start = np.array([self.s0, self.r0, self.i0])
         self.infection = None
 
-    def _give_func(self):
-        """
-        Returns the system of ODEs.
-        """
-        return self.func
-
     def _give_start(self):
         """
         Returns the vector of initial conditions.
@@ -87,3 +81,15 @@ class OdeSir:
         Returns final s, i, r values.
         """
         return self.s[-1], self.i[-1], self.r[-1]
+
+    def _give_totals(self):
+        """
+        Returns final values of S, I, R values.
+        """
+        return self.S, self.I, self.R
+
+    def _give_time(self):
+        """
+        Returns time vector.
+        """
+        return self.infection.t
