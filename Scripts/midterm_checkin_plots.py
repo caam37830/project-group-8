@@ -11,8 +11,8 @@ from sir.ode import *
 
 
 # Make a folder for the plots, if it doesn't already exist
-if not os.path.exists("./plots"):
-    os.mkdir("./plots")
+if not os.path.exists("../plots"):
+    os.mkdir("../plots")
 
 
 def sim_ODE(i0, N, b, k, t):
@@ -65,7 +65,7 @@ plt.legend(
 plt.xlabel("susceptible proportion")
 plt.ylabel("infected proportion")
 plt.title("S vs I with varied k (b = 1, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/PhaseKODE.png")
+plt.savefig("../plots/PhaseKODE.png")
 
 # S I R over time (b = 1, k = 0.05, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -76,7 +76,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
 plt.title("S I R over time (b = 1, k = 0.05, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/K05ODE.png")
+plt.savefig("../plots/K05ODE.png")
 
 # S I R over time (b = 1, k = 0.40, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -87,7 +87,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
 plt.title("S I R over time (b = 1, k = 0.40, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/K40ODE.png")
+plt.savefig("../plots/K40ODE.png")
 
 
 a = sim_ODE(i0=0.005, N=1000, b=1, k=0.15, t=50)
@@ -116,7 +116,7 @@ plt.legend(
 plt.xlabel("susceptible proportion")
 plt.ylabel("infected proportion")
 plt.title("S vs I with varied b (k = 0.15, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/PhaseKODE.png")
+plt.savefig("../plots/PhaseKODE.png")
 
 # S I R over time (b = 1, k = 0.15, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -127,7 +127,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
 plt.title("S I R over time (b = 1, k = 0.15, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/K05ODE.png")
+plt.savefig("../plots/K05ODE.png")
 
 # S I R over time (b = 50, k = 0.15, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -138,7 +138,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("number of agents")
 plt.title("S I R over time (b = 50, k = 0.10, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/K40ODE.png")
+plt.savefig("../plots/K40ODE.png")
 
 
 a = sim_ODE(i0=0.005, N=1000, b=1, k=0.25, t=50)
@@ -177,7 +177,7 @@ plt.legend(
 plt.xlabel("susceptible proportion")
 plt.ylabel("infected proportion")
 plt.title("S vs I with varied I0 (b = 1, k = 0.15, population size = 1000, t = 50)")
-plt.savefig("./plots/PhaseI0ODE.png")
+plt.savefig("../plots/PhaseI0ODE.png")
 
 # S I R over time (b = 1, k = 0.15, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -188,7 +188,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("number of agents")
 plt.title("S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 5, t = 50)")
-plt.savefig("./plots/I05ODE.png")
+plt.savefig("../plots/I05ODE.png")
 
 # S I R over time (b = 50, k = 0.15, population size = 1000, I0 = 5, t = 50) using ODE model
 plt.figure(figsize=(12, 8))
@@ -199,7 +199,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("number of agents")
 plt.title("S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 500, t = 50)")
-plt.savefig("./plots/I0500ODE.png")
+plt.savefig("../plots/I0500ODE.png")
 
 
 def sim_agent(b, k, size, prob_infect, initial_infect, t):
@@ -255,7 +255,7 @@ plt.ylabel("infected")
 plt.title(
     "S vs I with varied k (b = 1, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/PhaseKAgent.png")
+plt.savefig("../plots/PhaseKAgent.png")
 
 # S I R over time (b = 1, k = 0.05, population size = 1000, I0 = 5, t = 50, probability of infection = 1) using agent model
 plt.figure(figsize=(12, 8))
@@ -268,7 +268,7 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 1, k = 0.05, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/K05Agent.png")
+plt.savefig("../plots/K05Agent.png")
 
 # S I R over time (b = 1, k = 0.40, population size = 1000, I0 = 5, t = 50, probability of infection = 1 using agent model
 plt.figure(figsize=(12, 8))
@@ -281,7 +281,7 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 1, k = 0.40, population size = 1000, I0 = 5, t = 50, probability of infection = 1"
 )
-plt.savefig("./plots/K40Agent.png")
+plt.savefig("../plots/K40Agent.png")
 
 
 a = sim_agent(b=1, k=0.15, size=1000, prob_infect=1, initial_infect=5, t=50)
@@ -311,7 +311,7 @@ plt.ylabel("infected")
 plt.title(
     "S vs I with varied b (k = 0.15, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/PhaseBAgent.png")
+plt.savefig("../plots/PhaseBAgent.png")
 
 # S I R over time (b = 1, k = 0.15, population size = 1000, I0 = 5, t = 50, probability of infection = 1) using agent model
 plt.figure(figsize=(12, 8))
@@ -327,7 +327,7 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 1, k = 0.15, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/b1Agent.png")
+plt.savefig("../plots/b1Agent.png")
 
 # S I R over time (b = 50, k = 0.15, population size = 1000, I0 = 5, t = 50, probability of infection = 1) using agent model
 plt.figure(figsize=(12, 8))
@@ -340,7 +340,7 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 50, k = 0.15, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/b50Agent.png")
+plt.savefig("../plots/b50Agent.png")
 
 
 a = sim_agent(b=1, k=0.25, size=1000, prob_infect=1, initial_infect=5, t=50)
@@ -380,7 +380,7 @@ plt.ylabel("infected")
 plt.title(
     "S vs I with varied I0 (b = 1, k = 0.15, population size = 1000, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/PhaseI0Agent.png")
+plt.savefig("../plots/PhaseI0Agent.png")
 
 # S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 5, t = 50, probability of infection = 1) using agent model
 plt.figure(figsize=(12, 8))
@@ -396,7 +396,7 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 5, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/I04Agent.png")
+plt.savefig("../plots/I04Agent.png")
 
 # S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 500, t = 50, probability of infection = 1) using agent model
 plt.figure(figsize=(12, 8))
@@ -409,4 +409,4 @@ plt.ylabel("number of agents")
 plt.title(
     "S I R over time (b = 1, k = 0.25, population size = 1000, I0 = 500, t = 50, probability of infection = 1)"
 )
-plt.savefig("./plots/I0500Agent.png")
+plt.savefig("../plots/I0500Agent.png")
