@@ -6,12 +6,12 @@ from scipy.integrate import solve_ivp
 import numpy as np
 import unittest
 import sys
-sys.path.append('../sir/')
+
+sys.path.append("../sir/")
 from ode import OdeSir
 
 
 class TestSolver(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -24,14 +24,15 @@ class TestSolver(unittest.TestCase):
         s, i, r = test._give_values()
         time = test._give_time()
         a = np.asarray(np.where(abs(25 - time) <= 0.001))
-        ds = s[a] - s[a-1]
-        sols = -0.5 * s[a-1] * i[a-1]
-        dr = r[a] - r[a-1]
-        solr = 0.5 * i[a-1]
-        di = i[a] - i[a-1]
-        soli = 0.5 * s[a-1] * i[a-1] - 0.5 * i[a-1]
-        self.assertTrue(abs(ds - sols) <= 0.01 and abs(di - soli)
-                        <= 0.01 and abs(dr - solr) <= 0.01)
+        ds = s[a] - s[a - 1]
+        sols = -0.5 * s[a - 1] * i[a - 1]
+        dr = r[a] - r[a - 1]
+        solr = 0.5 * i[a - 1]
+        di = i[a] - i[a - 1]
+        soli = 0.5 * s[a - 1] * i[a - 1] - 0.5 * i[a - 1]
+        self.assertTrue(
+            abs(ds - sols) <= 0.01 and abs(di - soli) <= 0.01 and abs(dr - solr) <= 0.01
+        )
 
     def test_give_values(self):
         """
@@ -57,9 +58,11 @@ class TestSolver(unittest.TestCase):
         """
         test = OdeSir(0.1, 100, 0.5, 0.5)
 
-        def func(t, y): return np.array(
-            [-0.5 * y[0] * y[2], 0.5 * y[2],
-                0.5 * y[0] * y[2] - 0.5 * y[2]])
+        def func(t, y):
+            return np.array(
+                [-0.5 * y[0] * y[2], 0.5 * y[2], 0.5 * y[0] * y[2] - 0.5 * y[2]]
+            )
+
         start = np.array([0.9, 0, 0.1])
         tspan = (0, 5)
         out = solve_ivp(func, tspan, start)
@@ -90,7 +93,7 @@ class TestSolver(unittest.TestCase):
         S, I, R = test._give_totals()
         t = s + i + r
         T = S + I + R
-        self.assertTrue(t.all() == 1 and abs(100 - T).all() <= .001)
+        self.assertTrue(t.all() == 1 and abs(100 - T).all() <= 0.001)
 
     def test_give_time(self):
         """
@@ -99,9 +102,11 @@ class TestSolver(unittest.TestCase):
         test = OdeSir(0.1, 100, 0.5, 0.5)
         test._infect(5)
 
-        def func(t, y): return np.array(
-            [-0.5 * y[0] * y[2], 0.5 * y[2],
-                0.5 * y[0] * y[2] - 0.5 * y[2]])
+        def func(t, y):
+            return np.array(
+                [-0.5 * y[0] * y[2], 0.5 * y[2], 0.5 * y[0] * y[2] - 0.5 * y[2]]
+            )
+
         start = np.array([0.9, 0, 0.1])
         tspan = (0, 5)
         out = solve_ivp(func, tspan, start)

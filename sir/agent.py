@@ -1,10 +1,20 @@
+"""
+`sir.agent`
+
+Definitions for `SIRModel` class, and the
+`Agent` class
+"""
+
 import random
 import math
 import numpy as np
 
 
+# TODO: This class will be renamed to `DiscreteAgentModel` shortly after the
+# midterm checkpoint. I just don't want to interfere with code that has already
+# been submitted to run on the Midway RCC
 class SIRModel:
-    def __init__(self, b, k, size, prob_infect=1, initial_infect=None):
+    def __init__(self, b, k, size, prob_infect=None, initial_infect=None):
         """
         Initialize an `SIRModel` class
         :param b: number of interactions per day, per agent, which could result in infection
@@ -20,8 +30,8 @@ class SIRModel:
         self.infected = []
         self.recovered = []
         self.days_passed = 0
-        self.prob_infect = prob_infect
         self.initial_infect = initial_infect
+        self.prob_infect = 1 if prob_infect is None else prob_infect
         if self.initial_infect is not None:
             self.exogenous_infect(n=initial_infect)
 
@@ -70,6 +80,7 @@ class SIRModel:
         self.susceptible = list(range(self.size))
         self.infected = []
         self.recovered = []
+        self.days_passed = 0
 
     def categorize_agents(self):
         """
