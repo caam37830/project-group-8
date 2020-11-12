@@ -11,23 +11,25 @@ import matplotlib.pyplot as plt
 # fmt: on
 
 # parameters
-Population = 1000
-initial_infected = 10
+Population = 2500
+initial_infected = 3
 initial_proportion = initial_infected / Population
-time_span = 50
+time_span = 100
 
 
 def sim_ODE(i0, N, b, k, t):
     """
     returns array of arrays:
-        - first sub array is S
-        - second sub array is I
-        - third sub array is R
+        - first sub array is T
+        - second sub array is S
+        - third sub array is I
+        - fourthe sub array is R
     """
     sim = OdeSir(i0=i0, N=N, b=b, k=k)
     sim._infect(t=t)
     s, i, r = sim._give_values()
-    vals = np.array([s, i, r])
+    t = sim._give_time()
+    vals = np.array([t, s, i, r])
     return vals
 
 
@@ -40,17 +42,16 @@ f = sim_ODE(i0=initial_proportion, N=Population, b=1, k=0.3, t=time_span)
 g = sim_ODE(i0=initial_proportion, N=Population, b=1, k=0.35, t=time_span)
 h = sim_ODE(i0=initial_proportion, N=Population, b=1, k=0.4, t=time_span)
 
-
 # phase diagram for varied k using agent ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(a[0], a[1], "blue")
-plt.plot(b[0], b[1], "red")
-plt.plot(c[0], c[1], "green")
-plt.plot(d[0], d[1], "yellow")
-plt.plot(e[0], e[1], "purple")
-plt.plot(f[0], f[1], "gray")
-plt.plot(g[0], g[1], "pink")
-plt.plot(h[0], h[1], "orange")
+plt.plot(a[1], a[2], "blue")
+plt.plot(b[1], b[2], "red")
+plt.plot(c[1], c[2], "green")
+plt.plot(d[1], d[2], "yellow")
+plt.plot(e[1], e[2], "purple")
+plt.plot(f[1], f[2], "gray")
+plt.plot(g[1], g[2], "pink")
+plt.plot(h[1], h[2], "orange")
 plt.legend(
     [
         "k=0.05",
@@ -75,9 +76,9 @@ plt.savefig("../doc/checkpoint/plots/PhasekODE.png")
 
 # S I R over time k = 0.05 using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(a[0])), a[0], "blue")
-plt.plot(range(len(a[0])), a[1], "red")
-plt.plot(range(len(a[0])), a[2], "green")
+plt.plot(a[0], a[1], "blue")
+plt.plot(a[0], a[2], "red")
+plt.plot(a[0], a[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
@@ -90,9 +91,9 @@ plt.savefig("../doc/checkpoint/plots/k05ODE.png")
 
 # S I R over time k = 0.40 using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(h[0])), h[0], "blue")
-plt.plot(range(len(h[0])), h[1], "red")
-plt.plot(range(len(h[0])), h[2], "green")
+plt.plot(h[0], h[1], "blue")
+plt.plot(h[0], h[2], "red")
+plt.plot(h[0], h[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
@@ -116,14 +117,14 @@ h = sim_ODE(i0=initial_proportion, N=Population, b=50, k=0.15, t=time_span)
 
 # phase diagram for varied b using agent ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(a[0], a[1], "blue")
-plt.plot(b[0], b[1], "red")
-plt.plot(c[0], c[1], "green")
-plt.plot(d[0], d[1], "yellow")
-plt.plot(e[0], e[1], "purple")
-plt.plot(f[0], f[1], "gray")
-plt.plot(g[0], g[1], "pink")
-plt.plot(h[0], h[1], "orange")
+plt.plot(a[1], a[2], "blue")
+plt.plot(b[1], b[2], "red")
+plt.plot(c[1], c[2], "green")
+plt.plot(d[1], d[2], "yellow")
+plt.plot(e[1], e[2], "purple")
+plt.plot(f[1], f[2], "gray")
+plt.plot(g[1], g[2], "pink")
+plt.plot(h[1], h[2], "orange")
 plt.legend(
     ["b=1", "b=2", "b=3", "b=4", "b=5", "b=10", "b=20", "b=50"], loc="upper right"
 )
@@ -138,9 +139,9 @@ plt.savefig("../doc/checkpoint/plots/PhasebODE.png")
 
 # S I R over time b = 1 using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(a[0])), a[0], "blue")
-plt.plot(range(len(a[0])), a[1], "red")
-plt.plot(range(len(a[0])), a[2], "green")
+plt.plot(a[0], a[1], "blue")
+plt.plot(a[0], a[2], "red")
+plt.plot(a[0], a[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
@@ -153,9 +154,9 @@ plt.savefig("../doc/checkpoint/plots/b1ODE.png")
 
 # S I R over time b = 50 using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(h[0])), h[0], "blue")
-plt.plot(range(len(h[0])), h[1], "red")
-plt.plot(range(len(h[0])), h[2], "green")
+plt.plot(h[0], h[1], "blue")
+plt.plot(h[0], h[2], "red")
+plt.plot(h[0], h[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
@@ -179,14 +180,14 @@ h = sim_ODE(i0=initial_proportion * 25, N=Population, b=1, k=0.25, t=time_span)
 
 # phase diagram for varied I0 using agent ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(a[0], a[1], "blue")
-plt.plot(b[0], b[1], "red")
-plt.plot(c[0], c[1], "green")
-plt.plot(d[0], d[1], "yellow")
-plt.plot(e[0], e[1], "purple")
-plt.plot(f[0], f[1], "gray")
-plt.plot(g[0], g[1], "pink")
-plt.plot(h[0], h[1], "orange")
+plt.plot(a[1], a[2], "blue")
+plt.plot(b[1], b[2], "red")
+plt.plot(c[1], c[2], "green")
+plt.plot(d[1], d[2], "yellow")
+plt.plot(e[1], e[2], "purple")
+plt.plot(f[1], f[2], "gray")
+plt.plot(g[1], g[2], "pink")
+plt.plot(h[1], h[2], "orange")
 plt.legend(
     [
         "I0={}".format(initial_infected),
@@ -211,9 +212,9 @@ plt.savefig("../doc/checkpoint/plots/PhaseI0ODE.png")
 
 # S I R over time I0 = initial_infected using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(a[0])), a[0], "blue")
-plt.plot(range(len(a[0])), a[1], "red")
-plt.plot(range(len(a[0])), a[2], "green")
+plt.plot(a[0], a[1], "blue")
+plt.plot(a[0], a[2], "red")
+plt.plot(a[0], a[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
@@ -226,9 +227,9 @@ plt.savefig("../doc/checkpoint/plots/I01ODE.png")
 
 # S I R over time  I0 = initial_infected*25 using ODE model
 plt.figure(figsize=(12, 8))
-plt.plot(range(len(h[0])), h[0], "blue")
-plt.plot(range(len(h[0])), h[1], "red")
-plt.plot(range(len(h[0])), h[2], "green")
+plt.plot(h[0], h[1], "blue")
+plt.plot(h[0], h[2], "red")
+plt.plot(h[0], h[3], "green")
 plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
