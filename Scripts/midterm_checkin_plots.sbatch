@@ -4,7 +4,7 @@
 #SBATCH --time=01:20:00
 #SBATCH --partition=broadwl
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node= 16
+#SBATCH --ntasks-per-node=14
 #SBATCH --mem-per-cpu=64G
 
 module load python
