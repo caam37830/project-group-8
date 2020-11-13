@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 Population = 10000
 initial_infected = 50
 initial_proportion = initial_infected / Population
-time_span = 100
+time_span = 60
 
 
 def sim_ODE(i0, N, b, k, t):
