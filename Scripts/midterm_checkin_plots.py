@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # fmt: on
 
 # parameters
-Population = 2500
-initial_infected = 3
+Population = 1000000
+initial_infected = 100
 initial_proportion = initial_infected / Population
 time_span = 100
 
