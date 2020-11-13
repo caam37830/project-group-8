@@ -10,7 +10,6 @@ import sys
 sys.path.append("../sir/")
 from ode import OdeSir
 
-
 class TestSolver(unittest.TestCase):
     def setUp(self):
         pass
@@ -24,15 +23,18 @@ class TestSolver(unittest.TestCase):
         s, i, r = test._give_values()
         time = test._give_time()
         a = np.asarray(np.where(abs(25 - time) <= 0.001))
-        ds = s[a] - s[a - 1]
-        sols = -0.5 * s[a - 1] * i[a - 1]
-        dr = r[a] - r[a - 1]
-        solr = 0.5 * i[a - 1]
-        di = i[a] - i[a - 1]
-        soli = 0.5 * s[a - 1] * i[a - 1] - 0.5 * i[a - 1]
-        self.assertTrue(
-            abs(ds - sols) <= 0.01 and abs(di - soli) <= 0.01 and abs(dr - solr) <= 0.01
-        )
+        dt = time[a] - time[a-1]
+        ds = s[a] - s[a-1]
+        ds_dt = ds / dt
+        sols = -0.5 * s[a-1] * i[a-1]
+        dr = r[a] - r[a-1]
+        dr_dt = dr / dt
+        solr = 0.5 * i[a-1]
+        di = i[a] - i[a-1]
+        di_dt = di / dt
+        soli = 0.5 * s[a-1] * i[a-1] - 0.5 * i[a-1]
+        self.assertTrue(abs(ds_dt - sols) <= 0.001 and abs(di_dt - soli)
+                        <= 0.001 and abs(dr_dt - solr) <= 0.001)
 
     def test_give_values(self):
         """
