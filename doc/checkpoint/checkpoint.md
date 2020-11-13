@@ -1,4 +1,10 @@
 
+# Introduction to SIR method and terminology
+
+# Structure of SIR python package
+
+# Preliminary investigations
+
 # Extensions
 ## Extension - Anna
 
