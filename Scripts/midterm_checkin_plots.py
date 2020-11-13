@@ -105,14 +105,14 @@ plt.title(
 plt.savefig("../doc/checkpoint/plots/k40ODE.png")
 
 
-a = sim_ODE(i0=initial_proportion, N=Population, b=1, k=0.15, t=time_span)
-b = sim_ODE(i0=initial_proportion, N=Population, b=2, k=0.15, t=time_span)
-c = sim_ODE(i0=initial_proportion, N=Population, b=3, k=0.15, t=time_span)
-d = sim_ODE(i0=initial_proportion, N=Population, b=4, k=0.15, t=time_span)
-e = sim_ODE(i0=initial_proportion, N=Population, b=5, k=0.15, t=time_span)
-f = sim_ODE(i0=initial_proportion, N=Population, b=10, k=0.15, t=time_span)
-g = sim_ODE(i0=initial_proportion, N=Population, b=20, k=0.15, t=time_span)
-h = sim_ODE(i0=initial_proportion, N=Population, b=50, k=0.15, t=time_span)
+a = sim_ODE(i0=initial_proportion, N=Population, b=1, k=0.25, t=time_span)
+b = sim_ODE(i0=initial_proportion, N=Population, b=2, k=0.25, t=time_span)
+c = sim_ODE(i0=initial_proportion, N=Population, b=3, k=0.25, t=time_span)
+d = sim_ODE(i0=initial_proportion, N=Population, b=4, k=0.25, t=time_span)
+e = sim_ODE(i0=initial_proportion, N=Population, b=5, k=0.25, t=time_span)
+f = sim_ODE(i0=initial_proportion, N=Population, b=10, k=0.25, t=time_span)
+g = sim_ODE(i0=initial_proportion, N=Population, b=20, k=0.25, t=time_span)
+h = sim_ODE(i0=initial_proportion, N=Population, b=50, k=0.25, t=time_span)
 
 
 # phase diagram for varied b using agent ODE model
@@ -131,7 +131,7 @@ plt.legend(
 plt.xlabel("susceptible proportion")
 plt.ylabel("infected proportion")
 plt.title(
-    "S vs I with varied b (k = 0.15, population size = {}, I0 = {}, t = {})".format(
+    "S vs I with varied b (k = 0.25, population size = {}, I0 = {}, t = {})".format(
         Population, initial_infected, time_span
     )
 )
@@ -146,7 +146,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
 plt.title(
-    "S I R over time (b = 1, k = 0.15, population size = {}, I0 = {}, t = {})".format(
+    "S I R over time (b = 1, k = 0.25, population size = {}, I0 = {}, t = {})".format(
         Population, initial_infected, time_span
     )
 )
@@ -161,7 +161,7 @@ plt.legend(["S", "I", "R"], loc="upper right")
 plt.xlabel("time")
 plt.ylabel("proportion of agents")
 plt.title(
-    "S I R over time (b = 50, k = 0.15, population size = {}, I0 = {}, t = {})".format(
+    "S I R over time (b = 50, k = 0.25, population size = {}, I0 = {}, t = {})".format(
         Population, initial_infected, time_span
     )
 )

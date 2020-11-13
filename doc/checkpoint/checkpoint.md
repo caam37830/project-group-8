@@ -14,5 +14,12 @@ A variation we would like to implement is to account for reinfection in the S, I
 3.	If we want to model this as the coronavirus, limited information about reinfection rates can be found in a paper by Murillo-Zamora et al.
 4.	Reference: Murillo-Zamora E.; Mendoza-Cano O.; Delgado-Enciso I.; Hernandez-Suarez C. M. Predictors of Severe Symptomatic Laboratory-Confirmed Sars-Cov-2 Reinfection. *medRxiv* **2020**, 2020.10.14.20212720.
 
+## Extension - Jack
+
+
+## Extension - Jarrod
+
+The reactions of individuals and organizations is one of the most important factors in curbing the spread of a disease; however, information about what slows the spread, what harms the individuals, and who is succeptible to the disease is not always public information. Masks have been politicized and are widely used by certain groups whereas in others they are almost unanimously rejected as a valid form of defence against the virus. 
+
 
 
