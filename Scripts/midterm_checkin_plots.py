@@ -1,5 +1,5 @@
 """
-A very useful docstring
+Produce plots for the midterm check-in
 """
 # fmt: off
 import sys

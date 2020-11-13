@@ -1,6 +1,4 @@
 """
-`test_agent.py`
-
 Conduct unit tests for `Agent` and `SIRModel`
 """
 import unittest

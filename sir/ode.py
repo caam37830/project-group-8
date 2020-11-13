@@ -1,3 +1,7 @@
+"""
+Definition of the `OdeSir` class
+"""
+
 import numpy as np
 from scipy.integrate import solve_ivp
 
@@ -33,7 +37,8 @@ class OdeSir:
         self.b = b
         self.k = k
         self.func = lambda t, y: np.array(
-            [-self.b * y[0] * y[2], self.k * y[2], self.b * y[0] * y[2] - self.k * y[2]])
+            [-self.b * y[0] * y[2], self.k * y[2], self.b * y[0] * y[2] - self.k * y[2]]
+        )
         self.start = np.array([self.s0, self.r0, self.i0])
         self.infection = None
 

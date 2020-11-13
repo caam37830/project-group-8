@@ -1,6 +1,4 @@
 """
-`sir.agent`
-
 Definitions for `SIRModel` class, and the `Agent` class
 """
 
@@ -66,7 +64,6 @@ class SIRModel:
             print(
                 "SIRModel.exogenous_infect: supply either `n` or `indices`. No action was taken"
             )
-
 
     def reset(self):
         """
