@@ -5,7 +5,30 @@
 
 # Preliminary investigations
 
-We investigate a variety of different simulations, all of the plots created can be found in the plots folder, but we will discuss a few of the most interesting outcomes in this section. Generally, it is important to understand the factors that drive a virus to spread and then use that information to best understand how to stop it. The first factor we will investigate is "b", the infections per day per agent
+We investigate a variety of different simulations and will discuss a few of the most interesting visualizations in this section. Generally, it is important to understand the factors that drive a virus to spread and then use that information to best understand how to stop it. The first factor we will investigate is "b", the infections per day per agent, and try to understand what exactly this does to the timeline of a virus. To analyze this effect we assume moderate parameters and vary the value of b. We plot the number of susceptible individuals against the number of infected people over the course of the simulation in all of the phase diagrams in this report (note that we use a proportion for the continuos case and the raw number for the discrete agent case):
+![image](plots/PhasebAgent.png)
+![image](plots/PhasebODE.png)
+
+We observe that, as expected, the lower the value of b, the slower that the infection spreads, and in cases where b is low, sometimes the disease is totally eradicated before everyone has been infected. Furthermore, both of the methods produce similar results, so we can confidently say that more infections per infected person, increases the rate of spread.
+
+Next, we look at the effect of "k", the recovery coefficient, on the spread of the virus. Intuitively, we would expect a higher value of k to lead to slower spread of the virus through fewer people being able to transmit the virus at any given time:
+![image](plots/PhasekAgent.png)
+![image](plots/PhasekODE.png)
+
+Again, the results make intuitive sense, and it is beginning to become clear that while the the two different methods provide similar dynamics, the agent based approach provides more conservative estimates of how quickly the virus will spread than the ODE based approach. So, we should investigate some specific cases to see how the two approaches differ, and what that may mean.
+
+Now that we understand how the parameters effects the timeline of the virus we will analyze the SIR time series from a few simulations and connect them to the phase diagrams above. The following two plots show the number (or proportion) of infected agents in a situation that results in almost the entire population being infected at one point or another:
+![image](plots/I01Agent.png)
+![image](plots/I01ODE.png)
+
+We again observe that the ODE approach is more pessimistic it is projections. We see that the majority of infections happen early, and then after about 15 days in the case of the agent based model and 10 in the ODE model, the recovery rate exceeds the infection rate. This case follows one of the lines of the phase diagram where the line terminates at the s=0 i=0 location. Now lets look at a case where the two models do not match up very well:
+![image](plots/k40Agent.png)
+![image](plots/k40ODE.png)
+
+These two models have the same parameters, yet the pessimism of the ODE model seems to create drastically different results than the agent based approach. This seems odd at first, but a small nudge in the direction of increased infections can lead to a much worse outcome overall. For example, consider that the infection rate is the same as the recovery rate if there are 50 agents that are infected. Then, we could expect the number of agents who are sick to not increase that much. However, if we nudge that number up a little bit, say to 70, then we have pushed the system out of equilibrium and the infections may get out of control, this is the idea of flattening the curve and trying to keep the number of infections manageable. This may indicate that the ODE approach is more susceptible to random shocks to the system than the agent based approach, which is something that we must take into account in the future steps. (we provide additional plots from various other cases in the plots folder, which are interesting to look at but do not provide much more interesting analysis).
+
+These initial simulations highlight three key observations that will be very important in the next steps of this project. First, the choices of parameters b and k define the life cycle of the virus in a population and should be tuned such that the dynamics that we are interested in studying, whether that be knowledge about the virus accumulated by populations or the effect of the possibility of reinfection, is not overpowered by our choice of infection and recovery rate. Second, it is important to take into account multiple types of models when simulating the spread of a virus as even though the models may seem to have similar dynamics overall they may have drastically different projections for certain cases. Finally, model sensitivity is important to take into account when considering its projections. If we have a model that will tumble in whatever direction it is pushed, we had better make sure that those dynamics make sense.
+
 
 # Extensions
 ## Extension - Anna
