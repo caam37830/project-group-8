@@ -1,17 +1,29 @@
 
 # Introduction to SIR method and terminology
 The SIR model is a method for modeling the spread of disease in a population based on the idea that the individuals in the population fall in to one of three categories: susceptible, removed, or infected. Susceptible individuals have not yet gotten the disease and are in danger of contracting it. Infected individuals are carriers of the disease and spread it to others. Removed individuals have either recovered from the disease or died, so are no longer susceptible to it. We have implemented this method using both an Agent-based model and a system of ODEs. Both methods use parameters `b` and `k` to represent how the disease spreads. The parameter `b` represents the daily interactions of the individuals and `k` represents the fraction of the infected population that recovers each day. In our discussion of these models we have used the following notation:
-  i = fraction of the population that is infected (initial conditions i0)
-  I = absolute number of infected individuals (initial conditions I0)
-  r = fraction of the population that is removed (initial conditions r0)
-  R = absolute number of removed individuals (initial conditions R0)
-  s = fraction of the population that is susceptible (initial conditions s0)
-  S = absolute number of susceptible individuals (initials conditions S0)
-  N = number of individuals in the population
-  t = time
+  
+  `i = fraction of the population that is infected (initial conditions i0)`
+  
+  `I = absolute number of infected individuals (initial conditions I0)`
+  
+  `r = fraction of the population that is removed (initial conditions r0)`
+  
+  `R = absolute number of removed individuals (initial conditions R0)`
+  
+  `s = fraction of the population that is susceptible (initial conditions s0)`
+  
+  `S = absolute number of susceptible individuals (initials conditions S0)`
+  
+  `N = number of individuals in the population`
+  
+  `t = time`
+
 The Agent-based model uses interactions between infected individuals and susceptible individuals to trace the spread of the disease. The ODE method uses time dependent variables for each of the three possible states to model the spread of the disease. The evolution of these variables is described by the system of equations:
+  
   `ds/dt = -b * s(t) * i(t)`
+  
   `dr/dt = k * i(t)`
+  
   `di/dt = b * s(t) * i(t) - k * i(t)`
 
 
