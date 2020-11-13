@@ -30,6 +30,8 @@ The Agent-based model uses interactions between infected individuals and suscept
 
 # Structure of SIR python package
 
+The `sir` package contains two submodules: one, `agent`, contains class definitions for `Agent` and `SIRModel` (to be renamed to `DiscreteAgentModel` after this checkpoint), which are necessary to carry out the discrete agent simulations. Other, `ode`, contains the class definition for `OdeSir`, which is necessary to carry out the ODE version of the problem.
+
 # Preliminary investigations
 
 We investigate a variety of different simulations and will discuss a few of the most interesting visualizations in this section. Generally, it is important to understand the factors that drive a virus to spread and then use that information to best understand how to stop it. The first factor we will investigate is "b", the infections per day per agent, and try to understand what exactly this does to the timeline of a virus. To analyze this effect we assume moderate parameters and vary the value of b. We plot the number of susceptible individuals against the number of infected people over the course of the simulation in all of the phase diagrams in this report (note that we use a proportion for the continuos case and the raw number for the discrete agent case):
@@ -68,6 +70,13 @@ A variation we would like to implement is to account for reinfection in the S, I
 
 ## Extension - Jack
 
+A variation I knew I wanted to implement is to map the agents to a 2d space, and alter the rules for infection and removal; in effect, create an animation similar to Conway's Game of Life, except with different rules for the propagation of the disease. In order to do this, we would need to be able to uniquely map each agent to a square on the grid, and fortunately I've built my class with this functionality built in -- each agent is assigned an `id` parameter, which is largely invisible so far; in the extension of the model, this `id` could be used, in conjunction with `np.ravel..` and `np.unravel...`, to map each agent to a unique square on a grid.
+
+Once I am certain about what rules I will use for infection in the extended version (on a 2d grid), I will then proceed to create a new class which inherits from `SIRModel`, but overwrites/alters some methods. This is because the existing `SIRModel` has a `step` method which is not efficient enough to simulate the agents on a large `n` by `n` grid; the `categorize_agents` method specifically takes `O(n)` time to run. My main idea to speed up the code so far is to use an adjacency matrix, and then to optimize the `categorize_agents` method via `scipy.sparse` calculations or `np.vectorize`'d functions; the latter won't reduce the asymptotic run time, but in practice could prove to be much faster.
+
+Another challenge with the Game of Life Model is that we now have three unique states instead of two; I have two possibilities in mind: one is two simply adapt the rules for infection to return `0, 1,` or `2` on the grid; the other is to have two grids: one with `0`s and `s` (and removals marked `None` or `-Inf` or some other clear "removed" status), and the other with `0`s and `1`s (with *susceptible* marked `None` or `-Inf`). The `1s` on the first grid would correspond to `0`s on the second; since susceptible agents cannot recover, and recovered agents cannot be infected, I think this would also be an interesting option to explore to optimize performance.
+
+I would be curious to see if there is indeed a significant speed up in performance, as well as what initial states / starting patterns can limit the spread of infection the most (similar to the study of Conway's pentominos). I wonder if the simulation will tend towards "social-distancing" on the grid over time; and which initial states would cause this.
 
 ## Extension - Jarrod
 

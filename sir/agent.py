@@ -1,8 +1,7 @@
 """
 `sir.agent`
 
-Definitions for `SIRModel` class, and the
-`Agent` class
+Definitions for `SIRModel` class, and the `Agent` class
 """
 
 import random
