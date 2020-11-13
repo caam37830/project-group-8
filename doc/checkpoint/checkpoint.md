@@ -1,5 +1,20 @@
 
 # Introduction to SIR method and terminology
+The SIR model is a method for modeling the spread of disease in a population based on the idea that the individuals in the population fall in to one of three categories: susceptible, removed, or infected. Susceptible individuals have not yet gotten the disease and are in danger of contracting it. Infected individuals are carriers of the disease and spread it to others. Removed individuals have either recovered from the disease or died, so are no longer susceptible to it. We have implemented this method using both an Agent-based model and a system of ODEs. Both methods use parameters `b` and `k` to represent how the disease spreads. The parameter `b` represents the daily interactions of the individuals and `k` represents the fraction of the infected population that recovers each day. In our discussion of these models we have used the following notation:
+  i = fraction of the population that is infected (initial conditions i0)
+  I = absolute number of infected individuals (initial conditions I0)
+  r = fraction of the population that is removed (initial conditions r0)
+  R = absolute number of removed individuals (initial conditions R0)
+  s = fraction of the population that is susceptible (initial conditions s0)
+  S = absolute number of susceptible individuals (initials conditions S0)
+  N = number of individuals in the population
+  t = time
+The Agent-based model uses interactions between infected individuals and susceptible individuals to trace the spread of the disease. The ODE method uses time dependent variables for each of the three possible states to model the spread of the disease. The evolution of these variables is described by the system of equations:
+  `ds/dt = -b * s(t) * i(t)`
+  `dr/dt = k * i(t)`
+  `di/dt = b * s(t) * i(t) - k * i(t)`
+
+
 
 # Structure of SIR python package
 
@@ -34,9 +49,9 @@ These initial simulations highlight three key observations that will be very imp
 ## Extension - Anna
 
 A variation we would like to implement is to account for reinfection in the S, I, R model. With some viruses, even if infection leads to immunity in most, there is some probability of reinfection. Preliminary studies have found this to be the possible with coronavirus. 
-1.	In the final report, we would like to show how reinfection influences the spread of the infection. This would include the size of infected population and the rate at which the infection spreads. 
-2.	Implementing this from an ODE perspective, this would mean including in the rate of change of susceptible population a term connected with the recovered population’s probability of reinfection. This would also include accounting for recovered person’s who became infected again in the representation of the recovered population.
-3.	If we want to model this as the coronavirus, limited information about reinfection rates can be found in a paper by Murillo-Zamora et al.
+1.	In the final report, we would like to show how reinfection influences the spread of the infection. This would include the size of infected population and the rate at which the infection spreads. It may include accounting for those removed from the population being either dead or recovered. Those who have died would not be able to be reinfected, whereas those who are recovered would have some probability of being reinfected.
+2.	Implementing this from an ODE perspective, this would mean including in the rate of change of susceptible population a term connected with the recovered population’s probability of reinfection. This would also include accounting for recovered person’s who became infected again in the representation of the recovered population. We may also need to account for changes in population size from those who died and how this influences the size of the recovered population. 
+3.	If we want to model this as the coronavirus, limited information about reinfection rates can be found in a paper by Murillo-Zamora et al. However, this may be used more as a baseline to inform use about reinfection probabilities rather than directly modeling the coronavirus. 
 4.	Reference: Murillo-Zamora E.; Mendoza-Cano O.; Delgado-Enciso I.; Hernandez-Suarez C. M. Predictors of Severe Symptomatic Laboratory-Confirmed Sars-Cov-2 Reinfection. *medRxiv* **2020**, 2020.10.14.20212720.
 
 ## Extension - Jack
