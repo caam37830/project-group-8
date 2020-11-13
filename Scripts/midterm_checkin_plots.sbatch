@@ -5,7 +5,7 @@
 #SBATCH --partition=broadwl
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=14
-#SBATCH --mem-per-cpu=64G
+#SBATCH --mem-per-cpu=16000
 
 module load python
 python midterm_checkin_plots.py
