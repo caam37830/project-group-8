@@ -1,11 +1,23 @@
 # project-group-8
 
-https://github.com/caam37830/default-project/blob/main/midterm_checkpoint.md
+Group members:
 
-See doc/checkpoint for preliminary findings, discussing of next steps, and basic explanation of the SIR model. 
+* Anna Schouten
+* Jarrod Dominguez
+* Jack Potrykus
 
-See sir for agent based class and ODE based class.
+## Important Links
 
-See test for unit tests for model classes.
+* Midterm checkpoint
+    * [Guidelines](https://github.com/caam37830/default-project/blob/main/midterm_checkpoint.md)
+    * [SIR model overview](https://github.com/caam37830/default-project/blob/main/SIR.md)
+* Final report
+    * [Guidelines](https://github.com/caam37830/default-project/blob/main/final_report.md)
+    * [Spatial requirement overview](https://github.com/caam37830/default-project/blob/main/spatial.md)
 
-See Scripts for proccess simulations and plots
+## Organization of this repository
+
+* See `doc/checkpoint` for preliminary findings, discussing of next steps, and basic explanation of the SIR model. 
+* See `sir` for agent based class and ODE based class.
+* See `test` for unit tests for model classes.
+* See `Scripts` for proccess simulations and plots
