@@ -1,5 +1,5 @@
 """
-Definitions for `SIRModel` class, and the `Agent` class
+Definitions for `DiscreteAgent` class, and the `Agent` class
 """
 
 import random
@@ -10,16 +10,17 @@ import numpy as np
 # TODO: This class will be renamed to `DiscreteAgentModel` shortly after the
 # midterm checkpoint. I just don't want to interfere with code that has already
 # been submitted to run on the Midway RCC
-class SIRModel:
+class DiscreteAgentModel:
     def __init__(self, b, k, size, prob_infect=None, initial_infect=None):
         """
-        Initialize an `SIRModel` class
+        Initialize an `DiscreteAgentModel` class
         :param b: number of interactions per day, per agent, which could result in infection
         :param k: proportion of infected who recover/removed each day
         :param size: number of agents to generate
         :param prob_infect: (optional) probability that an interaction between a susceptible
         agent and an infected agent results in the susceptible agent's infection
         :param initial_infect: (optional) if supplied, start with `initial_infect` agents already infected
+        :return: None
         """
         self.b, self.k, self.size = b, k, size
         self.agents = [Agent(ii) for ii in range(size)]
@@ -47,7 +48,7 @@ class SIRModel:
                     self.categorize_agents()
             else:
                 print(
-                    "SIRModel.exogenous_infect: `n` greater than the number of susceptible agents"
+                    "DiscreteAgentModel.exogenous_infect: `n` greater than the number of susceptible agents"
                 )
 
         if indices is not None:
@@ -57,12 +58,12 @@ class SIRModel:
                     self.categorize_agents()
             else:
                 print(
-                    "SIRModel.exogenous_infect: `indices` contains non-susceptible agents"
+                    "DiscreteAgentModel.exogenous_infect: `indices` contains non-susceptible agents"
                 )
 
         if n is None and indices is None:
             print(
-                "SIRModel.exogenous_infect: supply either `n` or `indices`. No action was taken"
+                "DiscreteAgentModel.exogenous_infect: supply either `n` or `indices`. No action was taken"
             )
 
     def reset(self):
@@ -82,7 +83,7 @@ class SIRModel:
         """
         Iterate through the agents, and append their `id` to the appropriate list
         based off their current status
-        :return:
+        :return: None
         """
         self.susceptible = []
         self.infected = []
@@ -151,7 +152,7 @@ class SIRModel:
 
     def summarize_model(self):
         """
-        Summarize the current state of the `SIRModel` object
+        Summarize the current state of the `DiscreteAgentModel` object
         :return: A tuple summarizing the state of the model
         """
         return (
