@@ -249,7 +249,7 @@ def sim_agent(b, k, size, prob_infect, initial_infect, t):
         - number infected
         - number recovered
     """
-    sim = SIRModel(
+    sim = DiscreteAgentModel(
         b=b, k=k, size=size, prob_infect=prob_infect, initial_infect=initial_infect
     )
     vals = sim.step_t_days(t)
