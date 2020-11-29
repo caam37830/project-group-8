@@ -14,8 +14,8 @@ def sim_agent(
     k,
     size,
     t,
-    knowledge_factor=0,
-    fear_factor=0,
+    knowledge_threshold=0,
+    fear_threshold=0,
     knowledge_distance=0,
     fear_distance=0,
     prob_infect=None,
@@ -33,8 +33,8 @@ def sim_agent(
         q=q,
         k=k,
         size=size,
-        knowledge_factor=knowledge_factor,
-        fear_factor=fear_factor,
+        knowledge_threshold=knowledge_threshold,
+        fear_threshold=fear_threshold,
         knowledge_distance=knowledge_distance,
         fear_distance=fear_distance,
         prob_infect=prob_infect,
@@ -48,38 +48,30 @@ X = sim_agent(
     p=0.1,
     q=0.1,
     k=0.1,
-    size=100,
+    size=500,
     t=50,
-    knowledge_factor=0.1,
-    fear_factor=0.1,
-    knowledge_distance=0.1,
-    fear_distance=0.1,
+    knowledge_threshold=1,
+    fear_threshold=1,
+    knowledge_distance=0,
+    fear_distance=0.25,
     prob_infect=1,
     initial_infect=2,
 )
 
-print(X[0])
+print(X[3][0])
 
-plt.figure()
-plt.scatter(X[1][0], X[2][0])
-plt.show()
+for t in range(10):
+    fig, ax = plt.subplots()
+    for ii in range(len(X[3][t])):
+        if X[3][t][ii] == 0:
+            color = "blue"
+        elif X[3][t][ii] == 1:
+            color = "red"
+        else:
 
-plt.figure()
-plt.scatter(X[1][1], X[2][1])
-plt.show()
+            color = "green"
+        x, y = X[1][t][ii], X[2][t][ii]
+        ax.scatter(x, y, c=color, alpha=0.3, edgecolors="none")
 
-plt.figure()
-plt.scatter(X[1][2], X[2][2])
-plt.show()
-
-plt.figure()
-plt.scatter(X[1][3], X[2][3])
-plt.show()
-
-plt.figure()
-plt.scatter(X[1][4], X[2][4])
-plt.show()
-
-plt.figure()
-plt.scatter(X[1][5], X[2][5])
-plt.show()
+    ax.grid(True)
+    plt.show()

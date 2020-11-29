@@ -20,8 +20,8 @@ class SmartAgentModel2D:
         q,
         k,
         size,
-        knowledge_factor=0,
-        fear_factor=0,
+        knowledge_threshold=0,
+        fear_threshold=0,
         knowledge_distance=0,
         fear_distance=0,
         prob_infect=None,
@@ -42,8 +42,8 @@ class SmartAgentModel2D:
             self.q,
             self.k,
             self.size,
-            self.knowledge_factor,
-            self.fear_factor,
+            self.knowledge_threshold,
+            self.fear_threshold,
             self.knowledge_distance,
             self.fear_distance,
         ) = (
@@ -51,8 +51,8 @@ class SmartAgentModel2D:
             q,
             k,
             size,
-            knowledge_factor,
-            fear_factor,
+            knowledge_threshold,
+            fear_threshold,
             knowledge_distance,
             fear_distance,
         )
@@ -144,7 +144,9 @@ class SmartAgentModel2D:
                 ind_fear = tree.query_radius(
                     self.locations[ii : ii + 1], r=self.fear_distance
                 )
-                self.agents[ii].react(len(ind_fear[0]))
+                self.agents[ii].react(
+                    len(set(ind_fear[0]).intersection(set(self.infected)))
+                )
             if self.knowledge_distance != 0:
                 ind_knowledge = tree.query_radius(
                     self.locations[ii : ii + 1], r=self.knowledge_distance
@@ -159,28 +161,38 @@ class SmartAgentModel2D:
             ):
                 self.agents[ii].move(
                     self.p,
-                    self.fear_factor,
-                    [self.locations[i] for i in ind_fear[0]],
+                    self.fear_threshold,
+                    [
+                        self.locations[i]
+                        for i in set(ind_fear[0]).intersection(set(self.infected))
+                    ],
                 )
             else:
-                self.agents[ii].move(self.p, self.fear_factor)
+                self.agents[ii].move(self.p, self.fear_threshold)
             self.locations[ii] = self.agents[ii].pos
 
         # Recover k proportion of the infected
-        num_recover = math.ceil(len(self.infected) * self.k)
-        ids_recover = random.sample(self.infected, k=num_recover)
-        for r_id in ids_recover:
-            self.agents[r_id].recover()
-            self.categorize_agents()
+        num_recover = np.random.choice(
+            [
+                math.ceil(len(self.infected) * self.k),
+                math.floor(len(self.infected) * self.k),
+            ]
+        )
+        if num_recover > 0:
+            ids_recover = random.sample(self.infected, k=num_recover)
+            for r_id in ids_recover:
+                self.agents[r_id].recover()
+                self.categorize_agents()
 
         # infected agents infect individuals within range q
         tree = BallTree(np.array(self.locations))
         for ii in self.infected:
-            ind = tree.query_radius(self.locations[ii : ii + 1], r=self.q)
-            num_infect = math.ceil(len(ind[0][1:]) * self.prob_infect)
-            new_infect = random.sample(set(ind[0][1:]), num_infect)
-            for jj in new_infect:
-                self.agents[jj].infect()
+            if self.agents[ii].knowledge < self.knowledge_threshold:
+                ind = tree.query_radius(self.locations[ii : ii + 1], r=self.q)
+                num_infect = math.ceil(len(ind[0][1:]) * self.prob_infect)
+                new_infect = random.sample(set(ind[0][1:]), num_infect)
+                for jj in new_infect:
+                    self.agents[jj].infect()
 
         self.categorize_agents()
         self.days_passed += 1
@@ -201,9 +213,16 @@ class SmartAgentModel2D:
         num_r = np.zeros(days, dtype=np.int64)  # num recovered
         locsX = np.zeros((days, self.size))
         locsY = np.zeros((days, self.size))
+        infected = np.zeros((days, self.size), dtype=np.int64)
         for jj in range(self.size):
             locsX[0, jj] = np.round(self.locations[jj][0], 5)
             locsY[0, jj] = np.round(self.locations[jj][1], 5)
+            if self.agents[jj].i == True:
+                infected[0, jj] = int(1)
+            elif self.agents[jj].r == True:
+                infected[0, jj] = int(2)
+            else:
+                infected[0, jj] = int(0)
         # Initialize the 0th index to the initial state of the model
         num_d[0], num_s[0], num_i[0], num_r[0] = self.summarize_model()
 
@@ -213,8 +232,14 @@ class SmartAgentModel2D:
             for jj in range(self.size):
                 locsX[ii, jj] = np.round(self.locations[jj][0], 5)
                 locsY[ii, jj] = np.round(self.locations[jj][1], 5)
+                if self.agents[jj].i == True:
+                    infected[ii, jj] = int(1)
+                elif self.agents[jj].r == True:
+                    infected[ii, jj] = int(2)
+                else:
+                    infected[ii, jj] = int(0)
 
-        return np.array([num_d, num_s, num_i, num_r]).T, locsX, locsY
+        return np.array([num_d, num_s, num_i, num_r]).T, locsX, locsY, infected
 
     def summarize_model(self):
         """
@@ -280,13 +305,13 @@ class SmartAgent:
             self.i = False
             self.r = True
 
-    def move(self, p, fear_factor, loc_infected_nearby=None):
+    def move(self, p, fear_threshold, loc_infected_nearby=None):
         """
         Moves the `Agent` in a smart direction based off of the agents fear of the virus
         Checks that the initial state was "infected", otherwise no action is taken
         :return: None
         """
-        if self.fear < fear_factor or loc_infected_nearby == None:
+        if self.fear < fear_threshold or loc_infected_nearby == None or self.i == True:
             new_loc = [-1, -1]
             while new_loc[0] < 0 or new_loc[0] > 1 or new_loc[1] < 0 or new_loc[1] > 1:
                 delta = (
@@ -296,23 +321,18 @@ class SmartAgent:
                 )
                 new_loc = self.pos + delta
             self.pos = new_loc
-        """   
         else:
-            new_loc = [-1, -1]
-            while new_loc[0] < 0 or new_loc[0] > 1 or new_loc[1] < 0 or new_loc[1] > 1:
 
-                def f(x):
-                    return -np.norm(x - loc_infected_nearby)
+            def f(x):
+                return -np.linalg.norm(x - loc_infected_nearby)
 
-                bounds = Bounds(
-                    [self.pos[0] - p, self.pos[0] + p],
-                    [self.pos[1] - p, self.pos[1] + p],
-                )
-                res = minimize(f, x0=self.pos, bounds=bounds)
-                delta = res.x
-                new_loc = self.pos + delta
+            bounds = Bounds(
+                [max([self.pos[0] - p, 0]), max([self.pos[1] - p, 0])],
+                [np.min([self.pos[0] + p, 1]), np.min([self.pos[1] + p, 1])],
+            )
+            res = minimize(f, x0=self.pos, bounds=bounds)
+            new_loc = res.x
             self.pos = new_loc
-        """
 
     def learn(self, num_infect_or_recovered_nearby):
         """
