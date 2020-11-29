@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=midterm_checkin_plots.py
-#SBATCH --error=midterm_checkin_plots.err
+#SBATCH --job-name=smart_agent_sim.py
+#SBATCH --error=smart_agent_sim.err
 #SBATCH --time=01:20:00
 #SBATCH --partition=broadwl
 #SBATCH --nodes=1

@@ -44,34 +44,91 @@ def sim_agent(
     return vals
 
 
+P = 0.01
+Q = 0.01
+K = 0.05
+Size = 10000
+T = 100
+KT = 1
+FT = 1
+KD = 0
+FD = 0
+PI = 1
+II = 5
+
 X = sim_agent(
-    p=0.1,
-    q=0.1,
-    k=0.1,
-    size=500,
-    t=50,
-    knowledge_threshold=1,
-    fear_threshold=1,
-    knowledge_distance=0,
-    fear_distance=0.25,
-    prob_infect=1,
-    initial_infect=2,
+    p=P,
+    q=Q,
+    k=K,
+    size=Size,
+    t=100,
+    knowledge_threshold=KT,
+    fear_threshold=FT,
+    knowledge_distance=KD,
+    fear_distance=FD,
+    prob_infect=PI,
+    initial_infect=II,
 )
 
-print(X[3][0])
-
-for t in range(10):
-    fig, ax = plt.subplots()
+figfull = plt.figure(figsize=(10, 10))
+count = 1
+for t in [0, 32, 66, 99]:
+    plt.subplot(2, 2, count)
     for ii in range(len(X[3][t])):
         if X[3][t][ii] == 0:
             color = "blue"
         elif X[3][t][ii] == 1:
             color = "red"
         else:
-
             color = "green"
         x, y = X[1][t][ii], X[2][t][ii]
-        ax.scatter(x, y, c=color, alpha=0.3, edgecolors="none")
+        plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
+        plt.title("state at t = {}".format(t + 1))
+    count = count + 1
+plt.show()
+plt.savefig("../doc/final/plots/nolearn.png")
 
-    ax.grid(True)
-    plt.show()
+
+P = 0.01
+Q = 0.01
+K = 0.05
+Size = 10000
+T = 100
+KT = 100
+FT = 100
+KD = 0.25
+FD = 0.25
+PI = 1
+II = 5
+
+X = sim_agent(
+    p=P,
+    q=Q,
+    k=K,
+    size=Size,
+    t=100,
+    knowledge_threshold=KT,
+    fear_threshold=FT,
+    knowledge_distance=KD,
+    fear_distance=FD,
+    prob_infect=PI,
+    initial_infect=II,
+)
+
+figfull = plt.figure(figsize=(10, 10))
+count = 1
+for t in [0, 32, 66, 99]:
+    plt.subplot(2, 2, count)
+    for ii in range(len(X[3][t])):
+        if X[3][t][ii] == 0:
+            color = "blue"
+        elif X[3][t][ii] == 1:
+            color = "red"
+        else:
+            color = "green"
+        x, y = X[1][t][ii], X[2][t][ii]
+        plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
+        plt.title("state at t = {}".format(t + 1))
+    count = count + 1
+plt.show()
+plt.savefig("../doc/final/plots/yeslearn.png")

@@ -158,13 +158,29 @@ class SmartAgentModel2D:
             if (
                 self.fear_distance != 0
                 and len(set(ind_fear[0]).intersection(set(self.infected))) > 0
+                and self.agents[ii].s == True
+                and self.agents[ii].fear > self.fear_threshold
             ):
                 self.agents[ii].move(
                     self.p,
                     self.fear_threshold,
                     [
-                        self.locations[i]
-                        for i in set(ind_fear[0]).intersection(set(self.infected))
+                        self.locations[jj]
+                        for jj in set(ind_fear[0]).intersection(set(self.infected))
+                    ],
+                )
+            elif (
+                self.fear_distance != 0
+                and len(set(ind_fear[0]).intersection(set(self.susceptible))) > 0
+                and self.agents[ii].i == True
+                and self.agents[ii].knowledge > self.knowledge_threshold
+            ):
+                self.agents[ii].move(
+                    self.p,
+                    self.fear_threshold,
+                    [
+                        self.locations[jj]
+                        for jj in set(ind_fear[0]).intersection(set(self.susceptible))
                     ],
                 )
             else:
@@ -187,12 +203,11 @@ class SmartAgentModel2D:
         # infected agents infect individuals within range q
         tree = BallTree(np.array(self.locations))
         for ii in self.infected:
-            if self.agents[ii].knowledge < self.knowledge_threshold:
-                ind = tree.query_radius(self.locations[ii : ii + 1], r=self.q)
-                num_infect = math.ceil(len(ind[0][1:]) * self.prob_infect)
-                new_infect = random.sample(set(ind[0][1:]), num_infect)
-                for jj in new_infect:
-                    self.agents[jj].infect()
+            ind = tree.query_radius(self.locations[ii : ii + 1], r=self.q)
+            num_infect = math.ceil(len(ind[0][1:]) * self.prob_infect)
+            new_infect = random.sample(set(ind[0][1:]), num_infect)
+            for jj in new_infect:
+                self.agents[jj].infect()
 
         self.categorize_agents()
         self.days_passed += 1
@@ -305,13 +320,13 @@ class SmartAgent:
             self.i = False
             self.r = True
 
-    def move(self, p, fear_threshold, loc_infected_nearby=None):
+    def move(self, p, fear_threshold, loc_nearby=None):
         """
         Moves the `Agent` in a smart direction based off of the agents fear of the virus
         Checks that the initial state was "infected", otherwise no action is taken
         :return: None
         """
-        if self.fear < fear_threshold or loc_infected_nearby == None or self.i == True:
+        if loc_nearby == None or self.r == True:
             new_loc = [-1, -1]
             while new_loc[0] < 0 or new_loc[0] > 1 or new_loc[1] < 0 or new_loc[1] > 1:
                 delta = (
@@ -324,7 +339,7 @@ class SmartAgent:
         else:
 
             def f(x):
-                return -np.linalg.norm(x - loc_infected_nearby)
+                return -np.linalg.norm(x - loc_nearby)
 
             bounds = Bounds(
                 [max([self.pos[0] - p, 0]), max([self.pos[1] - p, 0])],
