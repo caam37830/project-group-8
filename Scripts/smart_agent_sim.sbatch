@@ -8,4 +8,4 @@
 #SBATCH --mem-per-cpu=4000
 
 module load python
-python midterm_checkin_plots.py
+python smart_agent_sim.py
