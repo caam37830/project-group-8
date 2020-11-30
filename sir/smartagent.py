@@ -342,7 +342,7 @@ class SmartAgent:
                 return -np.linalg.norm(x - loc_nearby)
 
             def cons_f(x):
-                return [(x[0] - self.pos[0]) ** 2 + (x[1] - self.pos[1]) ** 2]
+                return [np.linalg.norm(x - self.pos)]
 
             bounds = Bounds(
                 [0, 0],

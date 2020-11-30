@@ -47,7 +47,7 @@ def sim_agent(
 P = 0.01
 Q = 0.01
 K = 0.05
-Size = 100
+Size = 1000
 T = 200
 KT = 1
 FT = 1
@@ -92,12 +92,12 @@ plt.savefig("../doc/final/plots/nolearn3.png")
 P = 0.01
 Q = 0.01
 K = 0.05
-Size = 100
+Size = 10000
 T = 200
-KT = 1
-FT = 1
-KD = 0.175
-FD = 0.175
+KT = 100
+FT = 100
+KD = 0.15
+FD = 0.15
 PI = 1
 II = 5
 

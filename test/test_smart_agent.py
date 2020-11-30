@@ -19,7 +19,7 @@ else:
 from smartagent import *
 
 
-class SmartAgentModel2D(unittest.TestCase):
+class TestSmartAgentModel2D(unittest.TestCase):
     """
     Test the smart 2d agent model class
     """
@@ -174,7 +174,7 @@ class SmartAgentModel2D(unittest.TestCase):
         self.assertTrue(day1 - day0 == 1)
         # These effects are random, so checking logical upper/lower bounds
         self.assertTrue(0 <= num_s1 <= num_s0)
-        self.assertTrue(0 <= num_i1 <= num_i0 * (1 + b))
+        self.assertTrue(0 <= num_i1 <= num_i0 * (1 + 100 * 3.14 * q ** 2))
         self.assertTrue(0 <= num_r1 <= num_r0 + num_i0)
 
     def test_step_t_days(self):
@@ -326,13 +326,12 @@ class TestSmartAgent(unittest.TestCase):
         A = SmartAgent(1)
         ps = [0.1, 0.2, 0.5]
         fts = [0, 5, 10]
-        nb = np.random.rand(5, 2)
+        nb = [np.random.rand(100, 2)]
         for p in ps:
             for ft in fts:
                 A_pos_1 = A.pos
                 A.move(p, ft, nb)
-                print(np.linalg.norm(A_pos_1 - A.pos))
-                self.assertTrue(np.linalg.norm(A_pos_1 - A.pos) <= p)
+                self.assertTrue(np.round(np.linalg.norm(A_pos_1 - A.pos), 3) <= p)
 
     def test_learn(self):
         """
