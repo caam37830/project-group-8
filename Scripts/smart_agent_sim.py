@@ -86,7 +86,7 @@ for t in [0, 32, 66, 99]:
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
 plt.show()
-plt.savefig("../doc/final/plots/nolearn.png")
+plt.savefig("../doc/final/plots/nolearn2.png")
 
 
 P = 0.01
@@ -94,10 +94,10 @@ Q = 0.01
 K = 0.05
 Size = 10000
 T = 100
-KT = 100
-FT = 100
-KD = 0.25
-FD = 0.25
+KT = 1000
+FT = 1000
+KD = 0.1
+FD = 0.1
 PI = 1
 II = 5
 
@@ -131,4 +131,4 @@ for t in [0, 32, 66, 99]:
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
 plt.show()
-plt.savefig("../doc/final/plots/yeslearn.png")
+plt.savefig("../doc/final/plots/yeslearn2.png")
