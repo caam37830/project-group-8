@@ -47,7 +47,7 @@ def sim_agent(
 P = 0.01
 Q = 0.01
 K = 0.05
-Size = 1000
+Size = 10000
 T = 200
 KT = 1
 FT = 1
@@ -86,7 +86,7 @@ for t in [0, 66, 133, 199]:
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
 print(X[0])
-plt.savefig("../doc/final/plots/nolearn3.png")
+plt.savefig("../doc/final/plots/nolearn.png")
 
 
 P = 0.01
@@ -131,4 +131,4 @@ for t in [0, 66, 133, 199]:
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
 print(X[0])
-plt.savefig("../doc/final/plots/yeslearn3.png")
+plt.savefig("../doc/final/plots/yeslearn.png")
