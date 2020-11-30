@@ -7,7 +7,7 @@ import math
 import numpy as np
 import networkx as nx
 from sklearn.neighbors import BallTree
-from scipy.optimize import Bounds, minimize
+from scipy.optimize import Bounds, minimize, NonlinearConstraint
 
 
 # TODO: This class will be renamed to `DiscreteAgentModel` shortly after the
@@ -341,11 +341,15 @@ class SmartAgent:
             def f(x):
                 return -np.linalg.norm(x - loc_nearby)
 
+            def cons_f(x):
+                return [(x[0] - self.pos[0]) ** 2 + (x[1] - self.pos[1]) ** 2]
+
             bounds = Bounds(
-                [max([self.pos[0] - p, 0]), max([self.pos[1] - p, 0])],
-                [np.min([self.pos[0] + p, 1]), np.min([self.pos[1] + p, 1])],
+                [0, 0],
+                [1, 1],
             )
-            res = minimize(f, x0=self.pos, bounds=bounds)
+            cons = NonlinearConstraint(cons_f, -np.inf, p)
+            res = minimize(f, x0=self.pos, constraints=cons, bounds=bounds)
             new_loc = res.x
             self.pos = new_loc
 

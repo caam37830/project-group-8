@@ -85,8 +85,9 @@ for t in [0, 32, 66, 99]:
         plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
-plt.show()
-plt.savefig("../doc/final/plots/nolearn2.png")
+    print(X[0][ii])
+
+plt.savefig("../doc/final/plots/nolearn3.png")
 
 
 P = 0.01
@@ -130,5 +131,5 @@ for t in [0, 32, 66, 99]:
         plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
-plt.show()
-plt.savefig("../doc/final/plots/yeslearn2.png")
+    print(X[0][ii])
+plt.savefig("../doc/final/plots/yeslearn3.png")
