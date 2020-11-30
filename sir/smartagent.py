@@ -10,9 +10,6 @@ from sklearn.neighbors import BallTree
 from scipy.optimize import Bounds, minimize, NonlinearConstraint
 
 
-# TODO: This class will be renamed to `DiscreteAgentModel` shortly after the
-# midterm checkpoint. I just don't want to interfere with code that has already
-# been submitted to run on the Midway RCC
 class SmartAgentModel2D:
     def __init__(
         self,
@@ -28,10 +25,16 @@ class SmartAgentModel2D:
         initial_infect=None,
     ):
         """
-        Initialize an `DiscreteAgentModel` class
-        :param b: number of interactions per day, per agent, which could result in infection
+        Initialize an `SmartAgentModel2D` class (leave default optional parameters:
+        (knowledge_threshold=1, fear_threshold=1, knowledge_distance=0, fear_distance=0) for standard dynamics)
+        :param p: the maximum movement distance per day
+        :param q: the maximum infection distance per day
         :param k: proportion of infected who recover/removed each day
         :param size: number of agents to generate
+        :param knowledge_threshold: knowledge level after which an infected agent starts to act inteligently
+        :param fear_threshold: fear level after which a susceptible agent starts to act inteligently
+        :param knowledge_distance: the maximum distance away from an agent from which they can gather knowledge
+        :param fear_distance: the maximum distance away from an agent from which they can become more fearful
         :param prob_infect: (optional) probability that an interaction between a susceptible
         agent and an infected agent results in the susceptible agent's infection
         :param initial_infect: (optional) if supplied, start with `initial_infect` agents already infected
@@ -140,6 +143,7 @@ class SmartAgentModel2D:
         # agents learn and become more fearful, then move and we store new locations of all agents
         tree = BallTree(np.array(self.locations))
         for ii in agent_ids:
+            # agents become more fearful based on nearby infected agents
             if self.fear_distance != 0:
                 ind_fear = tree.query_radius(
                     self.locations[ii : ii + 1], r=self.fear_distance
@@ -147,6 +151,7 @@ class SmartAgentModel2D:
                 self.agents[ii].react(
                     len(set(ind_fear[0]).intersection(set(self.infected)))
                 )
+            # agents become more knowledgable based on nearby infected and recovered agents
             if self.knowledge_distance != 0:
                 ind_knowledge = tree.query_radius(
                     self.locations[ii : ii + 1], r=self.knowledge_distance
@@ -155,6 +160,7 @@ class SmartAgentModel2D:
                     len(set(ind_knowledge[0]).intersection(set(self.infected)))
                     + len(set(ind_knowledge[0]).intersection(set(self.recovered)))
                 )
+            # susceptible agents who are fearful enough separate themselves from infected
             if (
                 self.fear_distance != 0
                 and len(set(ind_fear[0]).intersection(set(self.infected))) > 0
@@ -169,9 +175,10 @@ class SmartAgentModel2D:
                         for jj in set(ind_fear[0]).intersection(set(self.infected))
                     ],
                 )
+            # infected agents who are knowledgable enough separate themselves from susceptible
             elif (
-                self.fear_distance != 0
-                and len(set(ind_fear[0]).intersection(set(self.susceptible))) > 0
+                self.knowledge_distance != 0
+                and len(set(ind_knowledge[0]).intersection(set(self.susceptible))) > 0
                 and self.agents[ii].i == True
                 and self.agents[ii].knowledge > self.knowledge_threshold
             ):
@@ -183,6 +190,7 @@ class SmartAgentModel2D:
                         for jj in set(ind_fear[0]).intersection(set(self.susceptible))
                     ],
                 )
+            # agents that fit in neither of the above categories simply move randomly
             else:
                 self.agents[ii].move(self.p, self.fear_threshold)
             self.locations[ii] = self.agents[ii].pos
@@ -221,14 +229,19 @@ class SmartAgentModel2D:
           - number susceptible
           - number infected
           - number recovered
+            X cords
+            Y cords
+            coding for each agents status at each time
         """
         num_d = np.zeros(days, dtype=np.int64)  # day indices
         num_s = np.zeros(days, dtype=np.int64)  # num susceptible
         num_i = np.zeros(days, dtype=np.int64)  # num infected
         num_r = np.zeros(days, dtype=np.int64)  # num recovered
-        locsX = np.zeros((days, self.size))
-        locsY = np.zeros((days, self.size))
-        infected = np.zeros((days, self.size), dtype=np.int64)
+        locsX = np.zeros((days, self.size))  # X cords for each agent
+        locsY = np.zeros((days, self.size))  # Y cords for each agent
+        infected = np.zeros(
+            (days, self.size), dtype=np.int64
+        )  # 0 if susceptible, 1 if infected 2 if recovered
         for jj in range(self.size):
             locsX[0, jj] = np.round(self.locations[jj][0], 5)
             locsY[0, jj] = np.round(self.locations[jj][1], 5)
@@ -272,7 +285,7 @@ class SmartAgentModel2D:
 class SmartAgent:
     def __init__(self, agent_id, pos=None):
         """
-        Initialize the `Agent` as susceptible
+        Initialize the `SmartAgent` as susceptible
         """
         self.s = True
         self.i = False
@@ -287,8 +300,8 @@ class SmartAgent:
 
     def reset(self):
         """
-        Reset the `Agent` to its initial state; i.e., make them susceptible again
-        Opens possibility of reinfection in simulations
+        Reset the `SmartAgent` to its initial state; i.e., make them susceptible again
+        Opens possibility of reinfection in simulations, new random location, no knowledge, no fear
         :return: None
         """
         self.s = True
@@ -300,7 +313,7 @@ class SmartAgent:
 
     def infect(self):
         """
-        Infect the `Agent`.
+        Infect the `SmartAgent`.
         Checks that initial state was "susceptible", otherwise no action is taken
         :return: None
         """
@@ -311,7 +324,7 @@ class SmartAgent:
 
     def recover(self):
         """
-        Recover the `Agent` from the infected state
+        Recover the `SmartAgent` from the infected state
         Checks that the initial state was "infected", otherwise no action is taken
         :return: None
         """
@@ -322,8 +335,7 @@ class SmartAgent:
 
     def move(self, p, fear_threshold, loc_nearby=None):
         """
-        Moves the `Agent` in a smart direction based off of the agents fear of the virus
-        Checks that the initial state was "infected", otherwise no action is taken
+        Moves the `SmartAgent` in a smart direction based off of the agents fear and knowledge of the virus
         :return: None
         """
         if loc_nearby == None or self.r == True:
@@ -355,16 +367,14 @@ class SmartAgent:
 
     def learn(self, num_infect_or_recovered_nearby):
         """
-        Moves the `Agent` in a smart direction based off of the agents fear of the virus
-        Checks that the initial state was "infected", otherwise no action is taken
+        increases the agents knowledge score
         :return: None
         """
         self.knowledge = self.knowledge + num_infect_or_recovered_nearby
 
     def react(self, num_nearby):
         """
-        Moves the `Agent` in a smart direction based off of the agents fear of the virus
-        Checks that the initial state was "infected", otherwise no action is taken
+        increases the agents fear score
         :return: None
         """
         self.fear = self.fear + num_nearby

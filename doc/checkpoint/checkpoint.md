@@ -1,4 +1,3 @@
-
 # Introduction to SIR method and terminology
 The SIR model is a method for modeling the spread of disease in a population based on the idea that the individuals in the population fall in to one of three categories: susceptible, removed, or infected. Susceptible individuals have not yet gotten the disease and are in danger of contracting it. Infected individuals are carriers of the disease and spread it to others. Removed individuals have either recovered from the disease or died, so are no longer susceptible to it. We have implemented this method using both an Agent-based model and a system of ODEs. Both methods use parameters `b` and `k` to represent how the disease spreads. The parameter `b` represents the daily interactions of the individuals and `k` represents the fraction of the infected population that recovers each day. In our discussion of these models we have used the following notation:
   
@@ -25,6 +24,7 @@ The Agent-based model uses interactions between infected individuals and suscept
   `dr/dt = k * i(t)`
   
   `di/dt = b * s(t) * i(t) - k * i(t)`
+
 
 
 
