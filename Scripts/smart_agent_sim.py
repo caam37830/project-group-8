@@ -61,7 +61,7 @@ X = sim_agent(
     q=Q,
     k=K,
     size=Size,
-    t=100,
+    t=200,
     knowledge_threshold=KT,
     fear_threshold=FT,
     knowledge_distance=KD,
@@ -72,7 +72,7 @@ X = sim_agent(
 
 figfull = plt.figure(figsize=(10, 10))
 count = 1
-for t in [0, 32, 66, 99]:
+for t in [0, 66, 133, 199]:
     plt.subplot(2, 2, count)
     for ii in range(len(X[3][t])):
         if X[3][t][ii] == 0:
@@ -96,8 +96,8 @@ Size = 10000
 T = 100
 KT = 1000
 FT = 1000
-KD = 0.1
-FD = 0.1
+KD = 0.175
+FD = 0.175
 PI = 1
 II = 5
 
@@ -106,7 +106,7 @@ X = sim_agent(
     q=Q,
     k=K,
     size=Size,
-    t=100,
+    t=200,
     knowledge_threshold=KT,
     fear_threshold=FT,
     knowledge_distance=KD,
@@ -117,7 +117,7 @@ X = sim_agent(
 
 figfull = plt.figure(figsize=(10, 10))
 count = 1
-for t in [0, 32, 66, 99]:
+for t in [0, 66, 133, 199]:
     plt.subplot(2, 2, count)
     for ii in range(len(X[3][t])):
         if X[3][t][ii] == 0:
