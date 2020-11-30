@@ -9,4 +9,4 @@
 #SBATCH --mem-per-cpu=4000
 
 module load python
-python sim_agent_q1
+python sim_agent_q1.py
