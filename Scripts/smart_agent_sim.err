@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "smart_agent_sim.py", line 88, in <module>
-    print(X[0][ii])
-IndexError: index 9999 is out of bounds for axis 0 with size 100
