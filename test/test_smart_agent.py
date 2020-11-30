@@ -5,6 +5,7 @@ import unittest
 import os
 import sys
 import random
+import numpy as np
 
 # Make an adjustment to where python will look for classes
 # Since this script can be run from within `/test`, a sibling
@@ -14,14 +15,13 @@ if os.getcwd().split("/")[-1] == "test":
 else:
     sys.path.append("./sir")
 
-
 # Import `Agent` and `SIRModel` classes.
-from agent import Agent, SIRModel
+from smartagent import *
 
 
-class TestDiscreteAgentModel(unittest.TestCase):
+class SmartAgentModel2D(unittest.TestCase):
     """
-    Test the discrete agent model class
+    Test the smart 2d agent model class
     """
 
     def setUp(self):
@@ -35,36 +35,81 @@ class TestDiscreteAgentModel(unittest.TestCase):
         Test initializing the class with a variety of paramters, including
         `NoneType`s for the optional parameters
         """
-        bs = [0, 1, 2]
+        ps = [0, 0.25, 0.5]
+        qs = [0, 0.25, 0.5]
         ks = [0.1, 0.2, 0.3]
         sz = [10, 20, 30]
+        KTs = [1, 10, 20]
+        FTs = [1, 10, 20]
+        KDs = [0, 0.25, 0.5]
+        FDs = [0, 0.25, 0.5]
         pr = [0.5, 0.2, None]
         ii = [3, 4, None]
-        for b in bs:
-            for k in ks:
-                for size in sz:
-                    for prob_infect in pr:
-                        for initial_infect in ii:
-                            M = SIRModel(b, k, size, prob_infect, initial_infect)
-                            self.assertTrue(M.b == b)
-                            self.assertTrue(M.k == k)
-                            self.assertTrue(M.size == size)
-                            self.assertTrue(M.days_passed == 0)
-                            self.assertTrue(len(M.recovered) == 0)
-                            if prob_infect is None:
-                                self.assertTrue(M.prob_infect == 1)
-                            else:
-                                self.assertTrue(M.prob_infect == prob_infect)
-                            if initial_infect is None:
-                                self.assertTrue(M.initial_infect is None)
-                                self.assertTrue(len(M.susceptible) == size)
-                                self.assertTrue(len(M.infected) == 0)
-                            else:
-                                self.assertTrue(M.initial_infect == initial_infect)
-                                self.assertTrue(
-                                    len(M.susceptible) == size - initial_infect
-                                )
-                                self.assertTrue(len(M.infected) == initial_infect)
+        for p in ps:
+            for q in qs:
+                for k in ks:
+                    for size in sz:
+                        for kt in KTs:
+                            for ft in FTs:
+                                for kd in KDs:
+                                    for fd in FDs:
+                                        for prob_infect in pr:
+                                            for initial_infect in ii:
+                                                M = SmartAgentModel2D(
+                                                    p,
+                                                    q,
+                                                    k,
+                                                    size,
+                                                    kt,
+                                                    ft,
+                                                    kd,
+                                                    fd,
+                                                    prob_infect,
+                                                    initial_infect,
+                                                )
+                                                self.assertTrue(M.p == p)
+                                                self.assertTrue(M.q == q)
+                                                self.assertTrue(M.k == k)
+                                                self.assertTrue(M.size == size)
+                                                self.assertTrue(
+                                                    M.knowledge_threshold == kt
+                                                )
+                                                self.assertTrue(M.fear_threshold == ft)
+                                                self.assertTrue(
+                                                    M.knowledge_distance == kd
+                                                )
+                                                self.assertTrue(M.fear_distance == fd)
+                                                self.assertTrue(M.days_passed == 0)
+                                                self.assertTrue(len(M.recovered) == 0)
+                                                if prob_infect is None:
+                                                    self.assertTrue(M.prob_infect == 1)
+                                                else:
+                                                    self.assertTrue(
+                                                        M.prob_infect == prob_infect
+                                                    )
+                                                if initial_infect is None:
+                                                    self.assertTrue(
+                                                        M.initial_infect is None
+                                                    )
+                                                    self.assertTrue(
+                                                        len(M.susceptible) == size
+                                                    )
+                                                    self.assertTrue(
+                                                        len(M.infected) == 0
+                                                    )
+                                                else:
+                                                    self.assertTrue(
+                                                        M.initial_infect
+                                                        == initial_infect
+                                                    )
+                                                    self.assertTrue(
+                                                        len(M.susceptible)
+                                                        == size - initial_infect
+                                                    )
+                                                    self.assertTrue(
+                                                        len(M.infected)
+                                                        == initial_infect
+                                                    )
 
     def test_exogenous_infect(self):
         """
@@ -74,10 +119,10 @@ class TestDiscreteAgentModel(unittest.TestCase):
         This, along with `test_step`, should each implicitly test `categorize_agents`
         method
         """
-        b, k, size = 1, 0.2, 100
+        p, q, k, size = 0.1, 0.1, 0.1, 100
         ns = [1, 10, 29]
         for n in ns:
-            M = SIRModel(b, k, size)
+            M = SmartAgentModel2D(p, q, k, size)
             M.exogenous_infect(n=n)
             self.assertTrue(len(M.susceptible) == size - n)
             self.assertTrue(len(M.infected) == n)
@@ -86,7 +131,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
         ks = [10, 20, 30]
         for k in ks:
             indices = random.sample(list(range(size)), k=k)
-            M = SIRModel(b, k, size)
+            M = SmartAgentModel2D(p, q, k, size)
             M.exogenous_infect(indices=indices)
             # If the two lists are each subsets of each other, they are exactly equal
             self.assertTrue(set(M.infected).issubset(set(indices)))
@@ -99,12 +144,13 @@ class TestDiscreteAgentModel(unittest.TestCase):
         """
         Ensure that the model can be reset to its initial state at any time
         """
-        b, k, size = 1, 0.1, 100
-        M = SIRModel(b, k, size)
-        N = SIRModel(b, k, size)
+        p, q, k, size = 0.1, 0.1, 0.1, 100
+        M = SmartAgentModel2D(p, q, k, size)
+        N = SmartAgentModel2D(p, q, k, size)
         N.step_t_days(15)
         N.reset()
-        self.assertTrue(M.b == N.b)
+        self.assertTrue(M.p == N.p)
+        self.assertTrue(M.q == N.q)
         self.assertTrue(M.k == N.k)
         self.assertTrue(M.size == N.size)
         self.assertTrue(len(N.susceptible) == size)
@@ -118,8 +164,8 @@ class TestDiscreteAgentModel(unittest.TestCase):
         Test that the model can reliably advance forward by one day's progress,
         and update model parameters
         """
-        b, k, size, initial_infect = 2, 0.1, 100, 5
-        M = SIRModel(b, k, size, initial_infect=initial_infect)
+        p, q, k, size, initial_infect = 0.1, 0.1, 0.1, 100, 5
+        M = SmartAgentModel2D(p, q, k, size, initial_infect=initial_infect)
         day0, num_s0, num_i0, num_r0 = M.summarize_model()
         M.step()
         day1, num_s1, num_i1, num_r1 = M.summarize_model()
@@ -135,23 +181,24 @@ class TestDiscreteAgentModel(unittest.TestCase):
         """
         Test `step_t_days` method.
         This largely relies on the `step` method.
-        Just need to check that the return array is of the correct dimensions, and
-        that the `days_passed` counter was updated correctly over many iterations
+        Just need to check that the SIR return array is of the correct dimensions, and
+        that the `days_passed` counter was updated correctly over many iterations, if these are true
+        then it is clear that the other return value's will have correct dimension
         """
         ts = [5, 10, 15]
-        b, k, size, initial_infect = 2, 0.1, 100, 5
+        p, q, k, size, initial_infect = 0.1, 0.1, 0.1, 100, 5
         for t in ts:
-            M = SIRModel(b, k, size, initial_infect=initial_infect)
-            return_shape = M.step_t_days(t).shape
+            M = SmartAgentModel2D(p, q, k, size, initial_infect=initial_infect)
+            return_shape_SIR = M.step_t_days(t)[0].shape
             self.assertTrue(M.days_passed == t - 1)
-            self.assertTrue(return_shape[0] == t)
-            self.assertTrue(return_shape[1] == 4)
+            self.assertTrue(return_shape_SIR[0] == t)
+            self.assertTrue(return_shape_SIR[1] == 4)
 
 
-# Test `Agent` functionality
-class TestAgent(unittest.TestCase):
+# Test `SmartAgent` functionality
+class TestSmartAgent(unittest.TestCase):
     """
-    Test methods for the `Agent` class
+    Test methods for the `SmartAgent` class
     `Agent.status()` method is trivial, and also implictly tested by testing
     `infect()`, `recover()`, and `reset`
     """
@@ -168,19 +215,27 @@ class TestAgent(unittest.TestCase):
         susceptible state
         """
         for ii in [5, 22, 89]:
-            A = Agent(ii)
-            s, i, r = A.status()
-            self.assertTrue(A.id == ii)
-            self.assertTrue(s == True)
-            self.assertTrue(i == False)
-            self.assertTrue(r == False)
+            for pos in [[0.25, 0.25], [0.5, 0.5], None]:
+                A = SmartAgent(ii, pos)
+                s, i, r = A.status()
+                self.assertTrue(A.id == ii)
+                self.assertTrue(s == True)
+                self.assertTrue(i == False)
+                self.assertTrue(r == False)
+                if pos == None:
+                    self.assertTrue(A.pos[0] <= 1)
+                    self.assertTrue(A.pos[1] <= 1)
+                    self.assertTrue(A.pos[0] >= 0)
+                    self.assertTrue(A.pos[1] >= 0)
+                else:
+                    self.assertTrue(A.pos == pos)
 
     def test_infect(self):
         """
         Testing the healthy agents can be infected, but recovered agents cannot
         """
         # Testing infection
-        A = Agent(1)
+        A = SmartAgent(1)
         A.infect()
         s, i, r = A.status()
         self.assertTrue(s == False)
@@ -202,7 +257,7 @@ class TestAgent(unittest.TestCase):
         """
         # An agent who isn't sick can't recover
         # So this should not change anything
-        A = Agent(1)
+        A = SmartAgent(1)
         s, i, r = A.status()
         A.recover()
         self.assertTrue(s == True)
@@ -228,13 +283,17 @@ class TestAgent(unittest.TestCase):
         """
         Ensure that the agent can be reset to its initial state at any time
         """
-        A = Agent(1)
+        A = SmartAgent(1)
         A.reset()
         s, i, r = A.status()
         self.assertTrue(s == True)
         self.assertTrue(i == False)
         self.assertTrue(r == False)
         self.assertTrue(A.id == 1)
+        self.assertTrue(A.pos[0] <= 1)
+        self.assertTrue(A.pos[1] <= 1)
+        self.assertTrue(A.pos[0] >= 0)
+        self.assertTrue(A.pos[1] >= 0)
 
         A.infect()
         A.reset()
@@ -243,6 +302,10 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(i == False)
         self.assertTrue(r == False)
         self.assertTrue(A.id == 1)
+        self.assertTrue(A.pos[0] <= 1)
+        self.assertTrue(A.pos[1] <= 1)
+        self.assertTrue(A.pos[0] >= 0)
+        self.assertTrue(A.pos[1] >= 0)
 
         A.infect()
         A.recover()
@@ -251,3 +314,44 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(i == False)
         self.assertTrue(r == False)
         self.assertTrue(A.id == 1)
+        self.assertTrue(A.pos[0] <= 1)
+        self.assertTrue(A.pos[1] <= 1)
+        self.assertTrue(A.pos[0] >= 0)
+        self.assertTrue(A.pos[1] >= 0)
+
+    def test_move(self):
+        """
+        Ensure that the agent always makes a legal move
+        """
+        A = SmartAgent(1)
+        ps = [0.1, 0.2, 0.5]
+        fts = [0, 5, 10]
+        nb = np.random.rand(5, 2)
+        for p in ps:
+            for ft in fts:
+                A_pos_1 = A.pos
+                A.move(p, ft, nb)
+                print(np.linalg.norm(A_pos_1 - A.pos))
+                self.assertTrue(np.linalg.norm(A_pos_1 - A.pos) <= p)
+
+    def test_learn(self):
+        """
+        Ensure that the agent does not get a lower knowledge level after learning
+        """
+        A = SmartAgent(1)
+        ns = [10, 20, 50]
+        for n in ns:
+            A_k_1 = A.knowledge
+            A.learn(n)
+            self.assertTrue(A_k_1 <= A.knowledge)
+
+    def test_learn(self):
+        """
+        Ensure that the agent does not get a lower fear level after reacting
+        """
+        A = SmartAgent(1)
+        ns = [10, 20, 50]
+        for n in ns:
+            A_f_1 = A.fear
+            A.react(n)
+            self.assertTrue(A_f_1 <= A.fear)

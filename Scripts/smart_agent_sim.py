@@ -3,7 +3,7 @@ import sys
 import os
 import numpy as np
 sys.path.append("../")  # lets us access sibling directory `sir`
-from sir.smart_agent import *
+from sir.smartagent import *
 import matplotlib.pyplot as plt
 # fmt: on
 
@@ -14,8 +14,8 @@ def sim_agent(
     k,
     size,
     t,
-    knowledge_threshold=0,
-    fear_threshold=0,
+    knowledge_threshold=1,
+    fear_threshold=1,
     knowledge_distance=0,
     fear_distance=0,
     prob_infect=None,
@@ -47,7 +47,7 @@ def sim_agent(
 P = 0.01
 Q = 0.01
 K = 0.05
-Size = 10000
+Size = 100
 T = 200
 KT = 1
 FT = 1
@@ -92,10 +92,10 @@ plt.savefig("../doc/final/plots/nolearn3.png")
 P = 0.01
 Q = 0.01
 K = 0.05
-Size = 10000
+Size = 100
 T = 200
-KT = 1000
-FT = 1000
+KT = 1
+FT = 1
 KD = 0.175
 FD = 0.175
 PI = 1
