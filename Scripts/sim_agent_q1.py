@@ -5,6 +5,7 @@ import numpy as np
 sys.path.append("../")  # lets us access sibling directory `sir`
 from sir.smartagent import *
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 # fmt: on
 
 
@@ -159,6 +160,11 @@ for p in P:
     plt.plot(X[0][:, 0], X[0][:, 3], "green")
     plt.title("SIR plot with p = {}".format(p))
     count = count + 1
+blue_patch = mpatches.Patch(color="blue", label="susceptible")
+red_patch = mpatches.Patch(color="red", label="infected")
+green_patch = mpatches.Patch(color="green", label="recovered")
+figfull.legend(handles=[blue_patch, red_patch, green_patch])
+figfull.suptitle("q = 0.01, k = 0.05, size = 10000, I0 = 5, start in center")
 plt.savefig("../doc/final/plots/startmid.png")
 
 P = 0.0075
@@ -231,4 +237,9 @@ plt.plot(X[0][:, 0], X[0][:, 2], "red")
 plt.plot(X[0][:, 0], X[0][:, 3], "green")
 plt.title("SIR plot starting random")
 
+blue_patch = mpatches.Patch(color="blue", label="susceptible")
+red_patch = mpatches.Patch(color="red", label="infected")
+green_patch = mpatches.Patch(color="green", label="recovered")
+figfull.legend(handles=[blue_patch, red_patch, green_patch])
+figfull.suptitle("p = 0.0075, q = 0.01, k = 0.05, size = 10000, I0 = 5")
 plt.savefig("../doc/final/plots/startdiff.png")

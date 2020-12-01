@@ -59,13 +59,22 @@ These two models have the same parameters, yet the the ODE model seems to create
 
 # SIR model with spatial component
 
-For the discrete agent spatial model we 
+For the discrete agent spatial model we first need to understand how our choice of parameters effects the timeline of the virus. Unlike in the non-spatial model, the population size plays a huge role in the dynamics of the virus since we fix the world to a 1x1 square. Thus, the higher the population the more densely packed our agents are and this leads to the virus spreading more quickly even with a low value of `q`. Both `p` and `q` have positive relationships with the rate of spread, which makes sense. If individuals have a large radius of infection, then they infect more people per period, and if they move a large distance, then the chance that an infected person interacts with agents that they haven't interacted with before also increases. This leads to our first simulation in which we start with 5 infected agents at the center of the population and see how the virus spreads holding all constant between simulations but the distance that agents can move per period `p`.
 
 
 # Smart Agent extension
+
+Throughout history, we have faced various diseases and have found that social distancing and quarantines have been one of the best ways to combat the spread (Roos (2020)). So, we propose the question: How does the course of a disease spreading change if the agents make intelligent decisions to slow its spread? 
+
+We first observe a baseline simulation (with parameters p = 0.01, q = 0.01, k = 0.05, size = 10000) of a disease where agents do not do anything to slow the spread ():
+![image](plots/nolearn.png)
 
 # extension 2
 
 # extension 3
 
 # extension conclusions
+
+# Bibliography
+
+Roos, Dave. “Social Distancing and Quarantine Were Used in Medieval Times to Fight the Black Death.” History.com, A&amp;E Television Networks, 25 Mar. 2020, www.history.com/news/quarantine-black-death-medieval. 

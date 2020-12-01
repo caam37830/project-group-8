@@ -5,6 +5,7 @@ import numpy as np
 sys.path.append("../")  # lets us access sibling directory `sir`
 from sir.smartagent import *
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 # fmt: on
 
 
@@ -85,19 +86,23 @@ for t in [0, 66, 133, 199]:
         plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
-print(X[0])
+blue_patch = mpatches.Patch(color="blue", label="susceptible")
+red_patch = mpatches.Patch(color="red", label="infected")
+green_patch = mpatches.Patch(color="green", label="recovered")
+figfull.legend(handles=[blue_patch, red_patch, green_patch])
+figfull.suptitle("p = 0.01, q = 0.01, k = 0.05, size = 10000, I0 = 5, no learning")
 plt.savefig("../doc/final/plots/nolearn.png")
-
+print(X[0])
 
 P = 0.01
 Q = 0.01
 K = 0.05
 Size = 10000
 T = 200
-KT = 100
-FT = 100
-KD = 0.15
-FD = 0.15
+KT = 1000
+FT = 1000
+KD = 0.1
+FD = 0.1
 PI = 1
 II = 5
 
@@ -130,5 +135,12 @@ for t in [0, 66, 133, 199]:
         plt.scatter(x, y, c=color, alpha=0.5, edgecolors="none")
         plt.title("state at t = {}".format(t + 1))
     count = count + 1
-print(X[0])
+blue_patch = mpatches.Patch(color="blue", label="susceptible")
+red_patch = mpatches.Patch(color="red", label="infected")
+green_patch = mpatches.Patch(color="green", label="recoverd")
+figfull.legend(handles=[blue_patch, red_patch, green_patch])
+figfull.suptitle(
+    "p = 0.01, q = 0.01, k = 0.05, size = 10000, I0 = 5, kt = ft = 1000, kd = fd = 0.1"
+)
 plt.savefig("../doc/final/plots/yeslearn.png")
+print(X[0])
