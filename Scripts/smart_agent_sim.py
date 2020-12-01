@@ -23,11 +23,7 @@ def sim_agent(
     initial_infect=None,
 ):
     """
-    returns `days` by `4` numpy array, with columns ...
-        - day number
-        - number susceptible
-        - number infected
-        - number recovered
+    returns simulation information with infected agents placed randomly around the population
     """
     sim = SmartAgentModel2D(
         p=p,
@@ -45,6 +41,7 @@ def sim_agent(
     return vals
 
 
+# parameters for simulation with no learning
 P = 0.01
 Q = 0.01
 K = 0.05
@@ -57,6 +54,7 @@ FD = 0
 PI = 1
 II = 5
 
+# simulation with no learning
 X = sim_agent(
     p=P,
     q=Q,
@@ -94,6 +92,7 @@ figfull.suptitle("p = 0.01, q = 0.01, k = 0.05, size = 10000, I0 = 5, no learnin
 plt.savefig("../doc/final/plots/nolearn.png")
 print(X[0])
 
+# parameters for simulation with learning
 P = 0.01
 Q = 0.01
 K = 0.05
@@ -106,6 +105,7 @@ FD = 0.1
 PI = 1
 II = 5
 
+# simulation with no learning
 X = sim_agent(
     p=P,
     q=Q,

@@ -23,11 +23,7 @@ def sim_agent_center(
     number_infect=0,
 ):
     """
-    returns `days` by `4` numpy array, with columns ...
-        - day number
-        - number susceptible
-        - number infected
-        - number recovered
+    returns simulation information with infected agents placed at center of population
     """
     sim = SmartAgentModel2D(
         p=p,
@@ -63,11 +59,7 @@ def sim_agent_corner(
     number_infect=0,
 ):
     """
-    returns `days` by `4` numpy array, with columns ...
-        - day number
-        - number susceptible
-        - number infected
-        - number recovered
+    returns simulation information with infected agents placed at corner of population
     """
     sim = SmartAgentModel2D(
         p=p,
@@ -103,11 +95,7 @@ def sim_agent(
     initial_infect=None,
 ):
     """
-    returns `days` by `4` numpy array, with columns ...
-        - day number
-        - number susceptible
-        - number infected
-        - number recovered
+    returns simulation information with infected agents placed randomly around the population
     """
     sim = SmartAgentModel2D(
         p=p,
@@ -125,6 +113,7 @@ def sim_agent(
     return vals
 
 
+# parameters for varied p simulations
 P = [0.0025, 0.005, 0.01, 0.025]
 Q = 0.01
 K = 0.05
@@ -137,7 +126,7 @@ FD = 0
 PI = 1
 NI = 5
 
-
+# varied p simulations
 figfull = plt.figure(figsize=(10, 10))
 count = 1
 for p in P:
@@ -167,6 +156,7 @@ figfull.legend(handles=[blue_patch, red_patch, green_patch])
 figfull.suptitle("q = 0.01, k = 0.05, size = 10000, I0 = 5, start in center")
 plt.savefig("../doc/final/plots/startmid.png")
 
+# parameters for varied start locations simulations
 P = 0.0075
 Q = 0.01
 K = 0.05
@@ -179,6 +169,7 @@ FD = 0
 PI = 1
 NI = 5
 
+# varied start locations simulations
 figfull = plt.figure(figsize=(10, 5))
 X = sim_agent_center(
     p=P,
