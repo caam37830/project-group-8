@@ -84,7 +84,7 @@ def sim_agent_corner(
     sim.exogenous_infect(indices=infect_inds)
     for ii in infect_inds:
         sim.agents[ii].pos[0] = 0 + (1 / 100) * np.random.rand(1)
-        sim.agents[ii].pos[1] = 0 + (1 / 100) * np.random.randn(1)
+        sim.agents[ii].pos[1] = 0 + (1 / 100) * np.random.rand(1)
     vals = sim.step_t_days(t)
     return vals
 
