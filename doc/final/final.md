@@ -28,17 +28,17 @@ The Agent-based model uses interactions between infected individuals and suscept
 We also explore three extensions to the above models, two of them being related to the agent based model and the other being related to the ODE model. We provide a brief introduction to each:
 1.  We explore how the spread of the virus is effected if the agents take some effort to socially distance themselves from others, if given enough information about the disease. We define the following parameters that are specific to this extension:
 
-    `knowledge_distance = the radius around an individual from which they can gather knowledge` 
+    `knowledge_distance (kd) = the radius around an individual from which they can gather knowledge` 
 
     `knowledge = the cumulative sum of infected and recovered individuals within the knowledge_distance of an individual`
 
-    `knowledge_threshold = the knowledge score that an infected agent must have to socially distance itself from healthy agents`
+    `knowledge_threshold (kt) = the knowledge score that an infected agent must have to socially distance itself from healthy agents`
 
-    `fear_distance = the radius around an individual from which they can gather become more fearful of the disease` 
+    `fear_distance (fd) = the radius around an individual from which they can gather become more fearful of the disease` 
 
     `fear = the cumulative sum of infected individuals within the fear_distance of an individual`
 
-    `fear_threshold = the fear score that a healthy agent must have to socially distance themselves from infected agents`
+    `fear_threshold (ft) = the fear score that a healthy agent must have to socially distance themselves from infected agents`
 
 Once a healthy agent achieves a fear score above the threshold level, they will then chose the location within a distance `p` that maximizes the sum of distances between them and any infected agents that are within the `fear_distance` from them. Furthermore, once an infected agent achieves a knowledge score above the threshold level, they will maximizes the sum of distances between them and healthy individuals within the `knowledge_distance` from them. Recovered individuals, and individuals that have not surpassed threshold levels do not act in any intelligent manner so they just chose a random location, within radius `p`, to move to each period.
 
