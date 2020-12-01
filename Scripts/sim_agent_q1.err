@@ -1,1 +1,1 @@
-python: can't open file 'sim_agent_q1': [Errno 2] No such file or directory
+slurmstepd-midway2-0005: error: *** JOB 7193444 ON midway2-0005 CANCELLED AT 2020-12-01T03:48:30 DUE TO TIME LIMIT ***
