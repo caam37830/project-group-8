@@ -29,4 +29,6 @@ jobs:
         run: pytest test/test_agent.py
       - name: Test with pytest
         run: pytest test/test_ode.py
+      - name: Test with pytest
+        run: pytest test/test_smart_agent.py
         
