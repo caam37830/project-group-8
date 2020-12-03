@@ -1,5 +1,5 @@
 """
-Conduct unit tests for `Agent` and `SIRModel`
+Conduct unit tests for `Agent` and `DiscreteAgentModel`
 """
 import unittest
 import os
@@ -15,8 +15,8 @@ else:
     sys.path.append("./sir")
 
 
-# Import `Agent` and `SIRModel` classes.
-from agent import Agent, SIRModel
+# Import `Agent` and `DiscreteAgentModel` classes.
+from agent import Agent, DiscreteAgentModel
 
 
 class TestDiscreteAgentModel(unittest.TestCase):
@@ -45,7 +45,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
                 for size in sz:
                     for prob_infect in pr:
                         for initial_infect in ii:
-                            M = SIRModel(b, k, size, prob_infect, initial_infect)
+                            M = DiscreteAgentModel(b, k, size, prob_infect, initial_infect)
                             self.assertTrue(M.b == b)
                             self.assertTrue(M.k == k)
                             self.assertTrue(M.size == size)
@@ -77,7 +77,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
         b, k, size = 1, 0.2, 100
         ns = [1, 10, 29]
         for n in ns:
-            M = SIRModel(b, k, size)
+            M = DiscreteAgentModel(b, k, size)
             M.exogenous_infect(n=n)
             self.assertTrue(len(M.susceptible) == size - n)
             self.assertTrue(len(M.infected) == n)
@@ -86,7 +86,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
         ks = [10, 20, 30]
         for k in ks:
             indices = random.sample(list(range(size)), k=k)
-            M = SIRModel(b, k, size)
+            M = DiscreteAgentModel(b, k, size)
             M.exogenous_infect(indices=indices)
             # If the two lists are each subsets of each other, they are exactly equal
             self.assertTrue(set(M.infected).issubset(set(indices)))
@@ -100,8 +100,8 @@ class TestDiscreteAgentModel(unittest.TestCase):
         Ensure that the model can be reset to its initial state at any time
         """
         b, k, size = 1, 0.1, 100
-        M = SIRModel(b, k, size)
-        N = SIRModel(b, k, size)
+        M = DiscreteAgentModel(b, k, size)
+        N = DiscreteAgentModel(b, k, size)
         N.step_t_days(15)
         N.reset()
         self.assertTrue(M.b == N.b)
@@ -119,7 +119,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
         and update model parameters
         """
         b, k, size, initial_infect = 2, 0.1, 100, 5
-        M = SIRModel(b, k, size, initial_infect=initial_infect)
+        M = DiscreteAgentModel(b, k, size, initial_infect=initial_infect)
         day0, num_s0, num_i0, num_r0 = M.summarize_model()
         M.step()
         day1, num_s1, num_i1, num_r1 = M.summarize_model()
@@ -141,7 +141,7 @@ class TestDiscreteAgentModel(unittest.TestCase):
         ts = [5, 10, 15]
         b, k, size, initial_infect = 2, 0.1, 100, 5
         for t in ts:
-            M = SIRModel(b, k, size, initial_infect=initial_infect)
+            M = DiscreteAgentModel(b, k, size, initial_infect=initial_infect)
             return_shape = M.step_t_days(t).shape
             self.assertTrue(M.days_passed == t - 1)
             self.assertTrue(return_shape[0] == t)

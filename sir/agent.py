@@ -1,5 +1,5 @@
 """
-Definitions for `DiscreteAgent` class, and the `Agent` class
+Definitions for `DiscreteAgentModel` class, and the `Agent` class
 """
 
 import random
@@ -7,9 +7,6 @@ import math
 import numpy as np
 
 
-# TODO: This class will be renamed to `DiscreteAgentModel` shortly after the
-# midterm checkpoint. I just don't want to interfere with code that has already
-# been submitted to run on the Midway RCC
 class DiscreteAgentModel:
     def __init__(self, b, k, size, prob_infect=None, initial_infect=None):
         """
