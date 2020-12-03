@@ -26,7 +26,7 @@ class ConwayModel:
 
     def get_alive_agents(self):
         """
-        Filter the agent list to only those which are 'alive' (according to _Conway's_ definition)
+        Filter the agent list to only those which are 'alive' (according to Conway's definition of alive)
         """
         return [agent for agent in self.agents if agent.is_alive]
 
@@ -34,8 +34,6 @@ class ConwayModel:
         """
         Set all agents as being alive or dead, based on membership in a list of ids
         """
-        # Set empty lists here -- stops a lurking error resulting from polymorphic
-        # optional arguments
         for agent in self.agents:
             if agent.id in born_list:
                 agent.born()
@@ -266,6 +264,7 @@ class ConwayAgent(Agent):
         to enable the two "games" (Conway + SIR model) to be played on the same board
         """
         super().__init__(agent_id)
+        self.initial_alive = is_alive
         self.is_alive = is_alive
 
     def reset(self):
@@ -273,6 +272,7 @@ class ConwayAgent(Agent):
         Reset the agent to its initial state
         """
         super().reset()
+        self.is_alive = self.initial_alive
 
     def infect(self):
         """
@@ -290,20 +290,16 @@ class ConwayAgent(Agent):
 
     def born(self):
         """
-        If the agent is dead, make them alive
+        Birth / reincarnation: take your pick
         """
         if not self.is_alive:
             self.is_alive = True
 
     def kill(self):
         """
-        If agent is alive, kill them
-        This will also reset them to the susceptible state, IF they are not infected
-        This allows the disease to re-appear (second waves)
+        Dodge this
         """
         if self.is_alive:
-            # if not self.i:
-            #     self.reset()
             self.is_alive = False
 
     def status(self):

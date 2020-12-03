@@ -1,6 +1,19 @@
-import numpy as np
+"""
+Visualization of `ConwayModel` class outputs
+"""
+import os
+import sys
 import random
+import numpy as np
 from matplotlib import pyplot as plt
+
+# Make an adjustment to where python will look for classes
+# Since this script can be run from within `/test`, a sibling
+# directory of `/sir`, or from the main project directory
+if os.getcwd().split("/")[-2] == "project-group-8":
+    sys.path.append("../sir")
+else:
+    sys.path.append("./sir")
 from conway_agent import ConwayModel, ConwayAgent
 
 
