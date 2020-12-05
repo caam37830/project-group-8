@@ -6,6 +6,9 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.sparse.csgraph import laplacian
 from scipy.integrate import solve_bvp
+import scipy.sparse as sparse
+import scipy.sparse.linalg as spla
+import math
 
 
 class OdeSir:
@@ -116,125 +119,100 @@ class SpatialSirOde(OdeSir):
         self.M = M
         self.p = p
         self.S0 = (1 - i0) * self.N
-        self.n = round(i0 * self.M)
+        self.n = math.ceil(i0 * (self.M ** 2))
         self.i0 = np.zeros((self.M, self.M))
         self.s0 = np.ones((self.M, self.M))
         if position == None:
-            self.ind_i = np.random.choice(self.M, self.n)
-            self.ind_j = np.random.choice(self.M, self.n)
+            self.ind_i = np.random.choice(self.M ** 2, self.n)
+            self.i0 = np.ravel(self.i0)
+            self.s0 = np.ravel(self.s0)
             for ind in self.ind_i:
-                for j in self.ind_j:
-                    self.i0[ind, j] = 1
-                    self.s0[ind, j] = 0
+                self.i0[ind] = 1
+                self.s0[ind] = 0
+            self.i0 = np.reshape(self.i0, (self.M, self.M))
+            self.s0 = np.reshape(self.s0, (self.M, self.M))
         elif position == 'corner':
             ind_i = np.arange(self.n)
+            self.i0 = np.ravel(self.i0)
+            self.s0 = np.ravel(self.s0)
             for ind in ind_i:
-                for j in ind_i:
-                    self.i0[ind, j] = 1
-                    self.s0[ind, j] = 0
+                self.i0[ind] = 1
+                self.s0[ind] = 0
+            self.i0 = np.reshape(self.i0, (self.M, self.M))
+            self.s0 = np.reshape(self.s0, (self.M, self.M))
         elif position == 'center':
-            center = round(self.M / 2)
+            center = round((self.M ** 2) / 2)
             start = center - round((self.n) / 2)
             end = center + round((self.n) / 2)
             ind_i = np.arange(start, end)
+            self.i0 = np.ravel(self.i0)
+            self.s0 = np.ravel(self.s0)
             for ind in ind_i:
-                for j in ind_i:
-                    self.i0[ind, j] = 1
-                    self.s0[ind, j] = 0
+                self.i0[ind] = 1
+                self.s0[ind] = 0
+            self.i0 = np.reshape(self.i0, (self.M, self.M))
+            self.s0 = np.reshape(self.s0, (self.M, self.M))
         self.r0 = np.zeros((self.M, self.M))
         self.i = self.i0
         self.s = self.s0
         self.r = self.r0
         self.weight = (1 / self.M) ** 2
-        self.y0 = np.array([self.s0, self.r0, self.i0])
-        self.x = np.linspace(0, self.N, self.M)
-
-        self.bc = lambda ya, yb: np.array([ya[0], yb[0]])
-
-        def fun(t, y): return np.array(
-            [-self.b * y[0] * y[2] + self.p * self.weight * laplacian(y[0]), self.k * y[2] + self.p * self.weight * y[1],
-                self.b * y[0] * y[2] - self.k * y[2] + self.p * self.weight * y[2]])
-        self.fun = np.vectorize(fun)
-
-    def _infect(self):
-        """
-        Solves system to simulate infection.
-        """
-        self.infection = solve_bvp(self.fun, self.bc, self.x, self.y0)
-        self.s = self.infection.y[0:, ]
-        self.r = self.infection.y[1:, ]
-        self.i = self.infection.y[2:, ]
-        self.S = self.s * self.N
-        self.R = self.r * self.N
-        self.I = self.i * self.N
-        return self.infection
-
-    def _give_position(self):
-        """
-        Return the x values from the spatially solved system.
-        """
-        return self.infection.x[0:, ], self.infection.x[1:, ], self.infection.x[2:, ]
-
-
-class ODEReinfection(OdeSir):
-    """
-    The SIR model solved using ODEs with reinfection 
-
-    and death rate parameters.
-    """
-
-    def __init__(self, i0, N, b, k, g, e):
-        """
-        Initilize the system. New parameters g and e
-
-        where g corresponds to the reinfection rate and e 
-
-        corresponds to the death rate.
-        """
-        super(ODEReinfection, self).__init__(i0, N, b, k)
-        self.e = e
-        self.g = g
-        self.d0 = 0
-        self.d = self.d0
-        self.D0 = 0
-        self.D = self.D0
-        self.func = lambda t, y: np.array(
-            [-self.b * y[0] * y[2] + self.g * y[1], self.k * y[2] - self.g * y[1],
-                self.b * y[0] * y[2] - self.k * y[2] - self.e * y[2], self.e * y[2]]
-        )
-        self.start = np.array([self.s0, self.r0, self.i0, self.d0])
+        self.start = np.array([self.s0, self.r0, self.i0])
+        self.diffusion_s = laplacian(self.s)
+        self.diffusion_i = laplacian(self.i)
+        self.diffusion_r = laplacian(self.r)
+        self.diffusion = None
+        self.s_f = []
+        self.r_f = []
+        self.i_f = []
+        self.fun = lambda t, y: np.array(
+            [-self.b * y[0] * y[2] + self.p * self.weight * self.diffusion[0], self.k * y[2] + self.p * self.weight * self.diffusion[1],
+                self.b * y[0] * y[2] - self.k * y[2] + self.p * self.weight * self.diffusion[2]])
 
     def _infect(self, t):
         """
-        Update infection routine to also produce death rate.
+        Solves system to simulate infection.
         """
-        super(ODEReinfection, self)._infect(t)
-        self.d = self.infection.y[3]
-        self.D = self.d * self.N
+        self.t = t
+        self.time = (0, self.t)
+        t_vals = []
+        for l in range(self.t):
+            t_vals.append(l)
+        s = np.zeros((self.M, self.M, self.t))
+        r = np.zeros((self.M, self.M, self.t))
+        i = np.zeros((self.M, self.M, self.t))
+        for j in range(self.M):
+            for k in range(self.M):
+                self.diffusion = np.array(
+                    [self.diffusion_s[j, k], self.diffusion_r[j, k], self.diffusion_i[j, k]])
+                y0 = np.array([self.s0[j, k], self.r0[j, k], self.i0[j, k]])
+                self.infection = solve_ivp(
+                    self.fun, self.time, y0, t_eval=t_vals)
+                s[j, k] = self.infection.y[0]
+                r[j, k] = self.infection.y[1]
+                i[j, k] = self.infection.y[2]
+        self.s = s
+        self.r = r
+        self.i = i
         return self.infection
-
-    def _reset(self):
-        """
-        Resets the model to the original s, i, r, d values.
-        """
-        super(ODEReinfection, self)._reset()
-        self.D = self.D0
-        self.d = self.d0
 
     def _give_values(self):
         """
-        Returns s, i, r, d arrays.
+        Convert grid solutions to proportions and return S, I, R values.
         """
-        return self.s, self.i, self.r, self.d
-
-    def _give_final_values(self):
-        """
-        Returns final s, i, r, d values.
-        """
-        return self.s[-1], self.i[-1], self.r[-1], self.d[-1]
-
-    def _give_totals(self):
-        """
-        Returns final values of S, I, R, D values.
-        """
-        return self.S, self.I, self.R, self.D
+        for t in range(self.t):
+            temp_s = 0
+            temp_i = 0
+            temp_r = 0
+            for j in range(self.M):
+                for k in range(self.M):
+                    temp_s = temp_s + self.s[j, k, t]
+                    temp_i = temp_i + self.i[j, k, t]
+                    temp_r = temp_r + self.r[j, k, t]
+            self.s_f.append(temp_s)
+            self.i_f.append(temp_i)
+            self.r_f.append(temp_r)
+        self.s_f = np.asarray(self.s_f) / (self.M ** 2)
+        self.i_f = np.asarray(self.i_f) / (self.M ** 2)
+        self.r_f = np.asarray(self.r_f) / (self.M ** 2)
+        return self.s_f, self.i_f, self.r_f
