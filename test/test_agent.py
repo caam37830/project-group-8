@@ -1,10 +1,10 @@
 """
 Conduct unit tests for `Agent` and `DiscreteAgentModel`
 """
-import unittest
 import os
 import sys
 import random
+import unittest
 
 # Make an adjustment to where python will look for classes
 # Since this script can be run from within `/test`, a sibling
