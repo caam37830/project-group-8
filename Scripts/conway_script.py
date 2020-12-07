@@ -65,27 +65,25 @@ def simulate_and_animate(days, m, n, k, p, prop_alive, prop_infect, file_prefix=
 
 
 # Run some simulations with various parameters
-if __name__ == "__main__":
-    ms = np.array([50, 100, 200, 500]).repeat(4)
-    ns = np.array([50, 100, 200, 500]).repeat(4)
-    ks = np.tile(np.array([0.1, 0.2, 0.3, 0.4]), 4)
-    ps = np.tile(np.array([0.1, 0.4, 0.7, 1.0]), 4)
+ms = np.array([50, 100, 200, 500]).repeat(4)
+ns = np.array([50, 100, 200, 500]).repeat(4)
+ks = np.tile(np.array([0.1, 0.2, 0.3, 0.4]), 4)
+ps = np.tile(np.array([0.1, 0.4, 0.7, 1.0]), 4)
 
-    # The following affect ONLY the initial state
-    prop_alive = np.tile(np.array([0.3, 0.4, 0.5, 0.6]), 4)
-    prop_infect = np.tile(np.array([0.3, 0.4, 0.5, 0.6]), 4)
-    for m, n, k, p, pa, pi in zip(ms, ns, ks, ps, prop_alive, prop_infect):
-        # Simulate 100 days and save results to a gif file
-        CM = ConwayModel(m, n, k, p, generate_agents(m * n, pa, pi))
-        filename = IMG_PREFIX + "conway_m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(
-            m, n, k, p, pa, pi
-        )
-        results = CM.plot_t_days(200, filename)
-        # Print filename and results to stdout, so we can look ath them later if we want
-        print(
-            "m = {}, n = {}, k = {}, p = {}, pia = {}, pii = {}".format(
-                m, n, k, p, pa, pi
-            )
-        )
-        print("-" * 80)
-        print(results)
+# The following affect ONLY the initial state
+prop_alive = np.tile(np.array([0.3, 0.4, 0.5, 0.6]), 4)
+prop_infect = np.tile(np.array([0.3, 0.4, 0.5, 0.6]), 4)
+for m, n, k, p, pa, pi in zip(ms, ns, ks, ps, prop_alive, prop_infect):
+    # Simulate 100 days and save results to a gif file
+    filename = IMG_PREFIX + "conway_m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(
+	m, n, k, p, pa, pi
+    )
+    results = simulate_and_animate(200, m, n, k, p, pa, pi, filename)
+    # Print filename and results to stdout, so we can look ath them later if we want
+    print(
+	"m = {}, n = {}, k = {}, p = {}, pia = {}, pii = {}".format(
+	    m, n, k, p, pa, pi
+	)
+    )
+    print("-" * 80)
+    print(results)

@@ -1,7 +1,9 @@
 MovieWriter imagemagick unavailable; trying to use pillow instead.
 Traceback (most recent call last):
-  File "conway_script.py", line 83, in <module>
-    results = CM.plot_t_days(200, filename)
+  File "conway_script.py", line 81, in <module>
+    results = simulate_and_animate(200, m, n, k, p, pa, pi, filename)
+  File "conway_script.py", line 63, in simulate_and_animate
+    results = model.plot_t_days(days, filename)
   File "../sir/conway_agent.py", line 251, in plot_t_days
     anim.save(filename, dpi=150, writer="imagemagick", fps=10)
   File "/software/python-anaconda-2020.02-el7-x86_64/lib/python3.7/site-packages/matplotlib/animation.py", line 1111, in save

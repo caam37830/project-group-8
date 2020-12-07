@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=smart_agent_sim.py
-#SBATCH --output=smart_agent_sim.out
-#SBATCH --error=smart_agent_sim.err
+#SBATCH --job-name=conway_agent.py
+#SBATCH --output=conway_agent.out
+#SBATCH --error=conway_agent.err
 #SBATCH --time=08:00:00
 #SBATCH --partition=broadwl
 #SBATCH --nodes=1
