@@ -1,0 +1,9 @@
+MovieWriter imagemagick unavailable; trying to use pillow instead.
+Traceback (most recent call last):
+  File "conway_script.py", line 83, in <module>
+    results = CM.plot_t_days(200, filename)
+  File "../sir/conway_agent.py", line 251, in plot_t_days
+    anim.save(filename, dpi=150, writer="imagemagick", fps=10)
+  File "/software/python-anaconda-2020.02-el7-x86_64/lib/python3.7/site-packages/matplotlib/animation.py", line 1111, in save
+    extra_args=extra_args, metadata=metadata)
+TypeError: 'str' object is not callable
