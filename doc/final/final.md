@@ -89,13 +89,13 @@ Of course these simulations are stylized in a manner to prove a point about the 
 # Reinfection Extension
 For some diseases, an individual previously infected cannot become reinfected because the immune system recognizes the disease and produces antibodies. However, in the case of many diseases, including Covid-19 (Murillo-Zamora, 2020), there is some probability of reinfection. The question we have considered is how the probability of reinfection influences in the overall rate of infection and recovery. To accurately reflect these conditions, the new model also accounts for the rate of deaths due to the disease. This is described by the following system of differential equations:
 
-$ \frac{ds(t)}{dt} = -b * s(t) * i(t) + g*r(t) $
+$\frac{ds(t)}{dt} = -b * s(t) * i(t) + g*r(t)$
 
-$ \frac{dr(t)}{dt} = k * i(t) – g * r(t) $
+$\frac{dr(t)}{dt} = k * i(t) – g * r(t)$
 
-$ \frac{di(t){dt) = b * s(t) * i(t) – k * i(t) – e * i(t) $
+$\frac{di(t){dt) = b * s(t) * i(t) – k * i(t) – e * i(t)$
 
-$ \frac{dd}{dt} = e * i(t) $
+$\frac{dd}{dt} = e * i(t)$
 
 In this system, as with the parent system `b` represents interactions and `k` represents recovery rate, and `s`, `i`, and `r` are the same. The new expression `d` represents death, and `g` is the rate of reinfection with `e` as the rate of death from the disease. 
 Modeled with three different reinfection rates, the results of this system simulated with parameters `N = 10000`, `k = 0.25`, `b = 1`, and `e = 0.005` appear below with varied parameters for `g`. 
