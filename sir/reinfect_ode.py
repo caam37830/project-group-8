@@ -1,4 +1,3 @@
-from sir.ode import OdeSir
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.sparse.csgraph import laplacian
@@ -6,7 +5,9 @@ from scipy.integrate import solve_bvp
 import scipy.sparse as sparse
 import scipy.sparse.linalg as spla
 import math
-
+import sys
+sys.path.append("./")
+from ode import OdeSir
 
 class ODEReinfection(OdeSir):
     """
