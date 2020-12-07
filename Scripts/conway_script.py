@@ -7,13 +7,15 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
-# Make an adjustment to where python will look for classes
-# Since this script can be run from within `/test`, a sibling
-# directory of `/sir`, or from the main project directory
+# Make an adjustment to where python will look for classes. Since this script
+# can be run from within `/script`, a sibling directory of `/sir`, or from the
+# main project directory
 if os.getcwd().split("/")[-2] == "project-group-8":
     sys.path.append("../sir")
+    IMG_PREFIX = "../doc/final/conway_plots/"
 else:
     sys.path.append("./sir")
+    IMG_PREFIX = "./doc/final/conway_plots/"
 from conway_agent import ConwayModel, ConwayAgent
 
 
@@ -38,14 +40,26 @@ def generate_agents(num_agents, prop_alive, prop_infect):
     return agents
 
 
-def simulate_and_animate(days, m, n, k, p, prop_alive, prop_infect):
+def simulate_and_animate(days, m, n, k, p, prop_alive, prop_infect, file_prefix=None):
     """
     Simulate `days` and produce a GIF file
     Returns the day-by-day tallies in a numpy array
     """
+    def generate_filename():
+        """
+        Generate a descriptive filename for each simulation
+        """
+        if file_prefix is None:
+            return "conway_m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(
+                m, n, k, p, pa, pi
+            )
+        return file_prefix + "conway_m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(
+            m, n, k, p, pa, pi
+        )
+
     agents = generate_agents(m * n, prop_alive, prop_infect)
     model = ConwayModel(m, n, k, p, agents)
-    filename = "conway_k{}_p{}.gif".format(k, p)
+    filename = generate_filename()
     results = model.plot_t_days(days, filename)
     return results
 
@@ -63,9 +77,15 @@ if __name__ == "__main__":
     for m, n, k, p, pa, pi in zip(ms, ns, ks, ps, prop_alive, prop_infect):
         # Simulate 100 days and save results to a gif file
         CM = ConwayModel(m, n, k, p, generate_agents(m * n, pa, pi))
-        filename = "m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(m, n, k, p, pa, pi)
+        filename = IMG_PREFIX + "conway_m_{}_n_{}_k_{}_p_{}_pia_{}_pii_{}.gif".format(
+            m, n, k, p, pa, pi
+        )
         results = CM.plot_t_days(200, filename)
         # Print filename and results to stdout, so we can look ath them later if we want
-        print("m = {}, n = {}, k = {}, p = {}, pia = {}, pii = {}".format(m, n, k, p, pa, pi))
+        print(
+            "m = {}, n = {}, k = {}, p = {}, pia = {}, pii = {}".format(
+                m, n, k, p, pa, pi
+            )
+        )
         print("-" * 80)
         print(results)
