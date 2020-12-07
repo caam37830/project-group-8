@@ -225,13 +225,14 @@ class ConwayModel:
             norm=norm
         )
 
-        def update_gol(frame):
+        def update_gol(frame, print_progress=False):
             """
             Helper function for `FuncAnimation`. Rules on how to update the frame.
             Also grab the summary statistics for each frame
             """
             nonlocal im
-            print("{} : Creating frame {} out of {}".format(filename, frame, days))
+            if print_progress:
+                print("{} : Creating frame {} out of {}".format(filename, frame, days))
             self.step_conway()
             self.step_agents()
             (
