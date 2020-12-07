@@ -111,11 +111,12 @@ class SpatialSirOde(OdeSir):
     The SIR method solved with ODEs including spatial components.
     """
 
-    def __init__(self, i0, N, b, k, p, position=None, M=200):
+    def __init__(self, i0, N, b, k, p, M=200, position=None):
         """
         Initialize the class.
         """
         super(SpatialSirOde, self).__init__(i0, N, b, k)
+        self.i0_1 = i0
         self.M = M
         self.p = p
         self.S0 = (1 - i0) * self.N
@@ -158,13 +159,16 @@ class SpatialSirOde(OdeSir):
         self.r = self.r0
         self.weight = (1 / self.M) ** 2
         self.start = np.array([self.s0, self.r0, self.i0])
-        self.diffusion_s = laplacian(self.s)
-        self.diffusion_i = laplacian(self.i)
-        self.diffusion_r = laplacian(self.r)
+        self.diffusion_s = np.ones((self.M, self.M)) * (1 - self.i0_1)
+        self.diffusion_i = np.ones((self.M, self.M)) * self.i0_1
+        self.diffusion_r = np.ones((self.M, self.M)) * 0
         self.diffusion = None
         self.s_f = []
         self.r_f = []
         self.i_f = []
+        self.S_f = None
+        self.R_f = None
+        self.I_f = None
         self.fun = lambda t, y: np.array(
             [-self.b * y[0] * y[2] + self.p * self.weight * self.diffusion[0], self.k * y[2] + self.p * self.weight * self.diffusion[1],
                 self.b * y[0] * y[2] - self.k * y[2] + self.p * self.weight * self.diffusion[2]])
@@ -178,6 +182,8 @@ class SpatialSirOde(OdeSir):
         t_vals = []
         for l in range(self.t):
             t_vals.append(l)
+        self.diffusion = np.array(
+            [self.diffusion_s, self.diffusion_r, self.diffusion_i])
         s = np.zeros((self.M, self.M, self.t))
         r = np.zeros((self.M, self.M, self.t))
         i = np.zeros((self.M, self.M, self.t))
@@ -196,7 +202,7 @@ class SpatialSirOde(OdeSir):
         self.i = i
         return self.infection
 
-    def _give_values(self):
+    def _give_summary(self):
         """
         Convert grid solutions to proportions and return S, I, R values.
         """
@@ -216,3 +222,12 @@ class SpatialSirOde(OdeSir):
         self.i_f = np.asarray(self.i_f) / (self.M ** 2)
         self.r_f = np.asarray(self.r_f) / (self.M ** 2)
         return self.s_f, self.i_f, self.r_f
+
+    def _give_total_summary(self):
+        """
+        Give the summary values for the total S, I, R values.
+        """
+        self.S_f = self.s_f * self.N
+        self.I_f = self.i_f * self.N
+        self.R_f = self.r_f * self.N
+        return self.S_f, self.I_f, self.R_f

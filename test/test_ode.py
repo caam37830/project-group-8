@@ -9,7 +9,7 @@ import sys
 
 sys.path.append("../sir/")
 from ode import OdeSir
-
+from ode import SpatialSirOde
 
 class TestSolver(unittest.TestCase):
     def setUp(self):
@@ -119,3 +119,18 @@ class TestSolver(unittest.TestCase):
         t_out = out.t
         t_test = test._give_time()
         self.assertTrue(abs(t_out - t_test).all() <= 0.001)
+
+    def test_give_values_spatial(self):
+        """
+        Tests that for the final values of the spatial model 
+
+        s + i + r = 1 and S + I + R = N.
+        """
+        test = SpatialSirOde(0.1, 1000, 0.5, 0.5, 100)
+        test._infect(20)
+        s, i, r = test._give_summary()
+        tot = s + i + r
+        S, I, R = test._give_total_summary()
+        ntot = S + I + R
+        self.assertTrue((abs(ntot - 1000).all() <=
+                         0.001) and (abs(tot - 1).all() <= 0.001))

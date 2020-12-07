@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "spatial_ode_sim.py", line 38, in <module>
+    s, i, r, T = SimulationSpatial(i0, N, b, k, 0.000075, t, position = 'center')
+NameError: name 'SimulationSpatial' is not defined

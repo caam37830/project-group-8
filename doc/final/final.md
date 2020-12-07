@@ -86,7 +86,30 @@ Observe that on day 67 the scattershot tells an entirely different story. We see
 
 Of course these simulations are stylized in a manner to prove a point about the importance of taking advantage of every tool possible to thwart the spread of disease, so the real world implications are limited. For example, we would like to include some strategic behavior beyond the agents just moving to a specific point with certainty, meaning that agents would make assumptions about how other agents would move and would use that information as well to help make their decisions (Kamien & Schwartz (2012)). All agents also may not "behave", they may refuse to learn or actually act destructively, which would blur the quarantine radii that we observe on day 67 of the "smart" simulation. Modelling human behavior, however, is a tall task and proving the merits of social distancing in a constrained case can lead us down the correct path in future research.
 
-# extension 2
+# Reinfection Extension
+For some diseases, an individual previously infected cannot become reinfected because the immune system recognizes the disease and produces antibodies. However, in the case of many diseases, including Covid-19 (Murillo-Zamora, 2020), there is some probability of reinfection. The question we have considered is how the probability of reinfection influences in the overall rate of infection and recovery. To accurately reflect these conditions, the new model also accounts for the rate of deaths due to the disease. This is described by the following system of differential equations:
+
+$ \frac{ds(t)}{dt} = -b * s(t) * i(t) + g*r(t) $
+
+$ \frac{dr(t)}{dt} = k * i(t) – g * r(t) $
+
+$ \frac{di(t){dt) = b * s(t) * i(t) – k * i(t) – e * i(t) $
+
+$ \frac{dd}{dt} = e * i(t) $
+
+In this system, as with the parent system `b` represents interactions and `k` represents recovery rate, and `s`, `i`, and `r` are the same. The new expression `d` represents death, and `g` is the rate of reinfection with `e` as the rate of death from the disease. 
+Modeled with three different reinfection rates, the results of this system simulated with parameters `N = 10000`, `k = 0.25`, `b = 1`, and `e = 0.005` appear below with varied parameters for `g`. 
+
+![image](plots/reinfectg_0.1.png)
+
+![image](plots/reinfectg_0.05.png)
+
+![image](plots/reinfectg_0.15.png)
+
+In contrast to the previous model, the susceptible proportion of the population does not decrease and plateau. Instead, the decrease is followed by an increase before the proportion stabilizes. As the reinfection rate increases, the proportion of the population that is infected stabilizes at a value that is close to the stable susceptible proportion, and the proportion of the population that is recovered is much smaller. The proportion of the population that dies stays close to the same for all three reinfection rates but may be very slightly higher with the higher reinfection rate. Over time, it is possible that at higher reinfection rates, the proportion of infected individuals may be larger than the susceptible individuals. 
+
+The model could be changed slightly to model vaccinations. A vaccinated population would follow something similar to this model with a negative `g` parameter. This difference would be that in the current model individuals moved from susceptible to infected before they can be recovered, but in the case of vaccinations, individuals would move directly from being susceptible to being recovered.
+
 
 # extension 3
 
@@ -97,3 +120,5 @@ Of course these simulations are stylized in a manner to prove a point about the 
 Roos, Dave. “Social Distancing and Quarantine Were Used in Medieval Times to Fight the Black Death.” History.com, A&amp;E Television Networks, 25 Mar. 2020, www.history.com/news/quarantine-black-death-medieval. 
 
 Kamien, Morton I., and Nancy Lou Schwartz. Dynamic Optimization the Calculus of Variations and Optimal Control in Economics and Management. Dover Publications, 2012. 
+
+Murillo-Zamora E.; Mendoza-Cano O.; Delgado-Enciso I.; Hernandez-Suarez C. M. Predictors of Severe Symptomatic Laboratory-Confirmed Sars-Cov-2 Reinfection. medRxiv 2020, 2020.10.14.20212720.
