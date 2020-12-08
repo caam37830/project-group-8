@@ -42,6 +42,9 @@ We also explore three extensions to the above models, two of them being related 
 
 Once a healthy agent achieves a fear score above the threshold level, they will then chose the location within a distance `p` that maximizes the sum of distances between them and any infected agents that are within the `fear_distance` from them. Furthermore, once an infected agent achieves a knowledge score above the threshold level, they will maximizes the sum of distances between them and healthy individuals within the `knowledge_distance` from them. Recovered individuals, and individuals that have not surpassed threshold levels do not act in any intelligent manner so they just chose a random location, within radius `p`, to move to each period.
 
+2.   Our previous models are dependent on the assumption that individuals can only be infected by the virus once. We investigate the model adjusted to account for reinfection rate. In order to account for reinfection, we also accounted for death rate due to the virus, such that infected individuals either recovered or died, rather than assuming that all previously infected individuals belonged to a single category. These changes resulted in a new system of differential equations described in detail below. Rather than a S, I, R model, the system represents a S, I, R, D model, where d(t) corresponds to the proportion of the population that dies due to the virus over time. Additionally, new parameters `e` and `g` are added to the new model. The parameter `g` represents probability of reinfection, and the parameter `e` represents the death rate. We monitor how the probability of reinfection changes the evolution of the groups within the population over time. 
+
+
 # Structure of SIR python package
 
 The `sir` package contains thee submodules: One, `agent`, contains class definitions for `Agent` and `DiscreteAgentModel`, which are necessary to carry out the discrete agent simulations with no spatial component. Two, `ode`, contains the class definition for `OdeSir`, which is necessary to carry out the ODE version of the problem. Three, `smartagent`, contains class definitions for `SmartAgent` and `SmartAgentModel2D`, which are necessary to carry out the discrete agent simulations with spatial component, and can be used to model "intelligent" agent behavior along with the standard random behavior.
@@ -68,6 +71,28 @@ We observe that the further an agent can move per period the faster the disease 
 ![image](plots/startdiff.png)
 
 We observe that the virus is the most successful when the agents are randomly placed, which seems counterintuitive at first. However, since we have chosen parameters that lead to the disease spreading throughout the entire population it will be advantageous for the disease to have as few overlapping infected in the early stages as possible, which leads the the random placement being more effective at spreading the disease than the grouping in the center. The simulation in which that agents are placed in the corner provides the slowest spread of the disease which makes sense as it not only suffers from the grouping issue that we see when the agents are in the center, but the disease can only spread in 2 directions. 
+
+For the differential equation model, to account for spatial components, the ODEs become PDEs. The differential model is simulated on a M x M grid, and the PDE model has a diffusion term that is multiplied by a parameter `p`, analogous to parameter `p` in the agent-based model. However, to account for step size in the differential model, `p` as compared to the agent-based parameter is scaled by 1/M. As with the spatially-independent models, we see that the dynamics of the agent-based model and the differential equation are similar. However, the change in values of `p` does not have the same impact on results. With parameters `N = 10000`, `b = 1`, `k = 0.05`, `i0 = 0.1`, and a `200 x 200` grid, the results over various values of `p` appear below. 
+
+(![image]plots/spatialp_1.25e-05.png)
+
+(![image]plots/spatialp_2.5e-05.png)
+
+(![image]plots/spatialp_5e-05.png)
+
+(![image]plots/spatialp_0.000125)
+
+The change in parameter `p` seems to have little to no influence on the development of the model. 
+
+Similarly, the location of the initial infected population is less significant. For the same parameters as above and `p = 0.000075` we show plots of the initial population in the center, corner, and at random below.
+
+(![image]plots/spatial_center.png)
+
+(![image]plots/spatial_corner.png)
+
+(![image]plots/spatial_random.png)
+
+All three locations seem to produce essentially the same results. Overall this model seems to be largely unaffected by the spatial components, with results that seem to be relatively spatially-independent. 
 
 
 # Smart Agent extension
@@ -97,7 +122,8 @@ $\frac{di(t){dt) = b * s(t) * i(t) – k * i(t) – e * i(t)$
 
 $\frac{dd}{dt} = e * i(t)$
 
-In this system, as with the parent system `b` represents interactions and `k` represents recovery rate, and `s`, `i`, and `r` are the same. The new expression `d` represents death, and `g` is the rate of reinfection with `e` as the rate of death from the disease. 
+In this system, as with the parent system `b` represents interactions and `k` represents recovery rate, and `s`, `i`, and `r` are the same. The new expression `dd/dt` represents the death rate within the population, and `g` is the rate of reinfection with `e` as the rate of death from the disease. 
+
 Modeled with three different reinfection rates, the results of this system simulated with parameters `N = 10000`, `k = 0.25`, `b = 1`, and `e = 0.005` appear below with varied parameters for `g`. 
 
 ![image](plots/reinfectg_0.1.png)
