@@ -74,23 +74,23 @@ We observe that the virus is the most successful when the agents are randomly pl
 
 For the differential equation model, to account for spatial components, the ODEs become PDEs. The differential model is simulated on a M x M grid, and the PDE model has a diffusion term that is multiplied by a parameter `p`, analogous to parameter `p` in the agent-based model. However, to account for step size in the differential model, `p` as compared to the agent-based parameter is scaled by 1/M. As with the spatially-independent models, we see that the dynamics of the agent-based model and the differential equation are similar. However, the change in values of `p` does not have the same impact on results. With parameters `N = 10000`, `b = 1`, `k = 0.05`, `i0 = 0.1`, and a `200 x 200` grid, the results over various values of `p` appear below. 
 
-(![image]plots/spatialp_1.25e-05.png)
+![image](plots/spatialp_1.25e-05.png)
 
-(![image]plots/spatialp_2.5e-05.png)
+![image](plots/spatialp_2.5e-05.png)
 
-(![image]plots/spatialp_5e-05.png)
+![image](plots/spatialp_5e-05.png)
 
-(![image]plots/spatialp_0.000125)
+![image](plots/spatialp_0.000125)
 
 The change in parameter `p` seems to have little to no influence on the development of the model. 
 
 Similarly, the location of the initial infected population is less significant. For the same parameters as above and `p = 0.000075` we show plots of the initial population in the center, corner, and at random below.
 
-(![image]plots/spatial_center.png)
+![image](plots/spatial_center.png)
 
-(![image]plots/spatial_corner.png)
+![image](plots/spatial_corner.png)
 
-(![image]plots/spatial_random.png)
+![image](plots/spatial_random.png)
 
 All three locations seem to produce essentially the same results. Overall this model seems to be largely unaffected by the spatial components, with results that seem to be relatively spatially-independent. 
 
