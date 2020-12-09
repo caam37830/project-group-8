@@ -1,0 +1,1 @@
+srun midterm_checkin_plots.py
