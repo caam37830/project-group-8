@@ -31,4 +31,7 @@ jobs:
         run: pytest test/test_ode.py
       - name: Test with pytest
         run: pytest test/test_smart_agent.py
-        
+      - name: Test with pytest
+        run: pytest test/test_conway_agent.py
+      - name: Test with pytest
+        run: pytest test/test_reinfect.py
