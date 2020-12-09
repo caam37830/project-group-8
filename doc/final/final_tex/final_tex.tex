@@ -35,13 +35,18 @@
 \begin{document}
 
 % -- Title page
-\maketitle{}                                                           % Make title page
-\tableofcontents{}                                                     % Show table of contents
-{\vfill{\begin{center}{\small\emph{Please note that the report itself spans pages 2 to 11 (10 total pages)}}\end{center}}}
-\newpage{}                                                             % New page, so it is clear that the report itself is <= 10 pages in length
+\maketitle{}           % Make title page
+\thispagestyle{empty}  % Remove fancyhdr styling for the bibliography
+\tableofcontents{}     % Show table of contents
+\vfill{                % Note to reader/grader regarding length of this paper
+    \begin{center}
+        {\small\emph{Please note that the report itself spans pages 2 to 11 (10 total pages)}}
+    \end{center}
+}
 
 
 % -- Main document
+\newpage{}                                                             % New page, so it is clear that the report itself is <= 10 pages in length
 \section{Abstract}
 The SIR model is a method for modeling the spread of disease in a population based on the idea that the individuals in the population fall in to one of three categories: susceptible, removed, or infected.
 \textbf{Susceptible} individuals have not yet gotten the disease and are in danger of contracting it.
@@ -75,10 +80,10 @@ We also explore three extensions to the above models, two of them being related 
 The \texttt{sir} package contains five submodules:
 \begin{enumerate}[label = (\roman*), itemsep = 0em]
     \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/agent.py}{\texttt{agent}}, which contains class definitions for \texttt{Agent} and \texttt{DiscreteAgentModel}, which are necessary to carry out the discrete agent simulations with no spatial component.
-    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/ode.py}{\texttt{ode}}, which contains class definition for \texttt{OdeSir}, which is necessary to carry out the ODE version of the problem.
-    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/smartagent.py}{\texttt{smartagent}}, which contains class definitions for \texttt{SmartAgent} and \texttt{SmartAgentModel2D}, which are necessary to carry out the discrete agent simulations with spatial component, and can be used to model “intelligent” agent behavior along with the standard random behavior.
-    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/reinfect_ode.py}{\texttt{reinfect\_ode}}, which contains a new definition for \texttt{OdeSir}, as well as the class definition for \texttt{SpatialSirOde}, which inherits from \texttt{OdeSir}.
-    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/conway_agent.py}{\texttt{conway\_agent}}, which contains class definitions for \texttt{ConwayAgent} and \texttt{ConwayModel}, which are necessary for the Conway extension.
+    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/ode.py}{\texttt{ode}}, which contains class definitions for \texttt{OdeSir} and \texttt{SpatialSirOde}, which are necessary to carry out the ODE version of the problem (without/with spatial component, respectively).
+    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/smartagent.py}{\texttt{smartagent}}, which contains class definitions for \texttt{SmartAgent} and \texttt{SmartAgentModel2D}, which are necessary to carry out the discrete agent simulations with spatial component, and can be used to model “intelligent” agent behavior along with the standard random behavior, for use in the \textbf{smart agent extension}.
+    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/reinfect_ode.py}{\texttt{reinfect\_ode}}, which contains the class definition for \texttt{ODEReinfection}, which inherits from \texttt{OdeSir}; this is used in the \textbf{reinfection extension}.
+    \item \href{https://github.com/caam37830/project-group-8/blob/main/sir/conway_agent.py}{\texttt{conway\_agent}}, which contains class definitions for \texttt{ConwayAgent} and \texttt{ConwayModel}, which are necessary for the \textbf{Conway extension}.
 \end{enumerate}
 In addition you will find the directories \href{https://github.com/caam37830/project-group-8/tree/main/test}{\texttt{test}}, containing unit tests of functionality for each implementation, \href{https://github.com/caam37830/project-group-8/tree/main/Scripts}{\texttt{Scripts}}, which contains scripts to be run on the Midway Compute Cluster, and \href{https://github.com/caam37830/project-group-8/tree/main/doc}{\texttt{doc}}, which contains our \href{https://github.com/caam37830/project-group-8/tree/main/doc/final/plots}{plots} and \href{https://github.com/caam37830/project-group-8/tree/main/doc/final/conway_plots}{animations}, the \href{https://github.com/caam37830/project-group-8/blob/main/doc/checkpoint/checkpoint.md}{midway checkpoint}, and the document you're reading! System requirements to use the package can be found in \href{https://github.com/caam37830/project-group-8/blob/main/requirements.txt}{\texttt{requirements.txt}}, and more useful info about this repository can be found in \href{https://github.com/caam37830/project-group-8/blob/main/README.md}{\texttt{README.md}}.
 
