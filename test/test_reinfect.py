@@ -10,6 +10,7 @@ import sys
 sys.path.append("../sir/")
 import reinfect_ode
 
+
 class TestSolver(unittest.TestCase):
     def setUp(self):
         pass
@@ -59,8 +60,12 @@ class TestSolver(unittest.TestCase):
 
         def func(t, y):
             return np.array(
-                [-0.5 * y[0] * y[2] + 0.1 * y[1], 0.5 * y[2] - 0.1 * y[1],
-                    0.5 * y[0] * y[2] - 0.5 * y[2] - 0.1 * y[2], 0.1 * y[2]]
+                [
+                    -0.5 * y[0] * y[2] + 0.1 * y[1],
+                    0.5 * y[2] - 0.1 * y[1],
+                    0.5 * y[0] * y[2] - 0.5 * y[2] - 0.1 * y[2],
+                    0.1 * y[2],
+                ]
             )
 
         start = np.array([0.9, 0, 0.1, 0])

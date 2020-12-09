@@ -1,3 +1,7 @@
+"""
+Class definitions for `ConwayAgent` and `ConwayModel` classes
+"""
+
 import random
 import math
 import numpy as np
@@ -222,7 +226,7 @@ class ConwayModel:
             interpolation="nearest",
             origin="lower",
             cmap=cmap,
-            norm=norm
+            norm=norm,
         )
 
         def update_gol(frame, print_progress=False):

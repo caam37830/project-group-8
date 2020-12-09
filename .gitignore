@@ -1,6 +1,18 @@
+# MacOS junk files
+*.DS_Store
+
+# IDE junk files
 .vscodea
 .idea
-*.DS_Store
+
+# TeX junk files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
 
 # The rest follows from the standard Python .gitignore, available at:
 # https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore

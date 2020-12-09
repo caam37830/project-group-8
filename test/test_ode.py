@@ -11,6 +11,7 @@ sys.path.append("../sir/")
 from ode import OdeSir
 from ode import SpatialSirOde
 
+
 class TestSolver(unittest.TestCase):
     def setUp(self):
         pass
@@ -122,7 +123,7 @@ class TestSolver(unittest.TestCase):
 
     def test_give_values_spatial(self):
         """
-        Tests that for the final values of the spatial model 
+        Tests that for the final values of the spatial model
 
         s + i + r = 1 and S + I + R = N.
         """
@@ -132,5 +133,6 @@ class TestSolver(unittest.TestCase):
         tot = s + i + r
         S, I, R = test._give_total_summary()
         ntot = S + I + R
-        self.assertTrue((abs(ntot - 1000).all() <=
-                         0.001) and (abs(tot - 1).all() <= 0.001))
+        self.assertTrue(
+            (abs(ntot - 1000).all() <= 0.001) and (abs(tot - 1).all() <= 0.001)
+        )

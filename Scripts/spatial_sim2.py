@@ -1,9 +1,11 @@
 import sys
+
 sys.path.append("./sir/")
 import ode
 import matplotlib.pyplot as plt
 
-def SimulateSpatial(i0, N, b, k, p, t, M = 200, **kwargs):
+
+def SimulateSpatial(i0, N, b, k, p, t, M=200, **kwargs):
     """
     Run a spatial ode simulation.
     """
@@ -13,50 +15,51 @@ def SimulateSpatial(i0, N, b, k, p, t, M = 200, **kwargs):
     T = x._give_time()
     return s, i, r, T
 
+
 i0 = 0.10
 N = 10000
 b = 1
 k = 0.05
 t = 60
 
-s, i, r, T = SimulateSpatial(i0, N, b, k, 0.000075, t, position = 'center')
-print(f'S, center: {s}')
-print(f'I, center: {i}')
-print(f'R, center: {r}')
-plt.plot(T, s, 'b-', label = 'susceptible')
-plt.plot(T, i, 'r-', label = 'infected')
-plt.plot(T, r, 'g-', label = 'recovered')
+s, i, r, T = SimulateSpatial(i0, N, b, k, 0.000075, t, position="center")
+print(f"S, center: {s}")
+print(f"I, center: {i}")
+print(f"R, center: {r}")
+plt.plot(T, s, "b-", label="susceptible")
+plt.plot(T, i, "r-", label="infected")
+plt.plot(T, r, "g-", label="recovered")
 plt.legend()
-plt.xlabel('time')
-plt.ylabel('proportion')
-plt.title(f'Spatial model center')
-plt.savefig(f'spatial_center.png')
+plt.xlabel("time")
+plt.ylabel("proportion")
+plt.title(f"Spatial model center")
+plt.savefig(f"spatial_center.png")
 plt.clf()
 
-s, i, r, T = SimulateSpatial(i0, N, b, k, 0.000075, t, position = 'corner')
-print(f'S, corner: {s}')
-print(f'I, corner: {i}')
-print(f'R, corner: {r}')
-plt.plot(T, s, 'b-', label = 'susceptible')
-plt.plot(T, i, 'r-', label = 'infected')
-plt.plot(T, r, 'g-', label = 'recovered')
+s, i, r, T = SimulateSpatial(i0, N, b, k, 0.000075, t, position="corner")
+print(f"S, corner: {s}")
+print(f"I, corner: {i}")
+print(f"R, corner: {r}")
+plt.plot(T, s, "b-", label="susceptible")
+plt.plot(T, i, "r-", label="infected")
+plt.plot(T, r, "g-", label="recovered")
 plt.legend()
-plt.xlabel('time')
-plt.ylabel('proportion')
-plt.title(f'Spatial model center')
-plt.savefig(f'spatial_corner.png')
+plt.xlabel("time")
+plt.ylabel("proportion")
+plt.title(f"Spatial model center")
+plt.savefig(f"spatial_corner.png")
 plt.clf()
 
 s, i, r, T = SimulateSpatial(i0, N, b, k, 0.000075, t)
-print(f'S, random: {s}')
-print(f'I, random: {i}')
-print(f'R, random: {r}')
-plt.plot(T, s, 'b-', label = 'susceptible')
-plt.plot(T, i, 'r-', label = 'infected')
-plt.plot(T, r, 'g-', label = 'recovered')
+print(f"S, random: {s}")
+print(f"I, random: {i}")
+print(f"R, random: {r}")
+plt.plot(T, s, "b-", label="susceptible")
+plt.plot(T, i, "r-", label="infected")
+plt.plot(T, r, "g-", label="recovered")
 plt.legend()
-plt.xlabel('time')
-plt.ylabel('proportion')
-plt.title(f'Spatial model center')
-plt.savefig(f'spatial_random.png')
+plt.xlabel("time")
+plt.ylabel("proportion")
+plt.title(f"Spatial model center")
+plt.savefig(f"spatial_random.png")
 plt.clf()

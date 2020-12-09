@@ -1,3 +1,6 @@
+"""
+Simulations for `SmartAgent` model
+"""
 # fmt: off
 import sys
 import os

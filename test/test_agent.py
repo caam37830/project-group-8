@@ -45,7 +45,9 @@ class TestDiscreteAgentModel(unittest.TestCase):
                 for size in sz:
                     for prob_infect in pr:
                         for initial_infect in ii:
-                            M = DiscreteAgentModel(b, k, size, prob_infect, initial_infect)
+                            M = DiscreteAgentModel(
+                                b, k, size, prob_infect, initial_infect
+                            )
                             self.assertTrue(M.b == b)
                             self.assertTrue(M.k == k)
                             self.assertTrue(M.size == size)

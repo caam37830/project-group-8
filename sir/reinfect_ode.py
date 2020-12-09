@@ -1,3 +1,7 @@
+"""
+Definition for `ODEReinfection` class
+"""
+
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.sparse.csgraph import laplacian
@@ -6,12 +10,14 @@ import scipy.sparse as sparse
 import scipy.sparse.linalg as spla
 import math
 import sys
+
 sys.path.append("./")
 from ode import OdeSir
 
+
 class ODEReinfection(OdeSir):
     """
-    The SIR model solved using ODEs with reinfection 
+    The SIR model solved using ODEs with reinfection
 
     and death rate parameters.
     """
@@ -20,7 +26,7 @@ class ODEReinfection(OdeSir):
         """
         Initilize the system. New parameters g and e
 
-        where g corresponds to the reinfection rate and e 
+        where g corresponds to the reinfection rate and e
 
         corresponds to the death rate.
         """
@@ -32,8 +38,12 @@ class ODEReinfection(OdeSir):
         self.D0 = 0
         self.D = self.D0
         self.func = lambda t, y: np.array(
-            [-self.b * y[0] * y[2] + self.g * y[1], self.k * y[2] - self.g * y[1],
-                self.b * y[0] * y[2] - self.k * y[2] - self.e * y[2], self.e * y[2]]
+            [
+                -self.b * y[0] * y[2] + self.g * y[1],
+                self.k * y[2] - self.g * y[1],
+                self.b * y[0] * y[2] - self.k * y[2] - self.e * y[2],
+                self.e * y[2],
+            ]
         )
         self.start = np.array([self.s0, self.r0, self.i0, self.d0])
 
